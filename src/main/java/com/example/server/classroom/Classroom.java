@@ -20,4 +20,9 @@ public class Classroom {
     @NonNull
     @NotBlank
     private String name;
+
+    private ClassroomStatus status = ClassroomStatus.empty;
+    public void UpdateStatus(ClassroomStatus newStatus){
+        this.status=newStatus;
+    }
 }

@@ -10,9 +10,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ClassroomService {
     final private ClassroomRepository classroomRepository;
+
     public Classroom classroomGet(Long classId){
         return classroomRepository.findById(classId).orElseThrow();
     }
+
     public List<Classroom> classroomGetAll(){
         return classroomRepository.findAll();
     }
