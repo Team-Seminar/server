@@ -1,6 +1,5 @@
 package com.example.server.classroom;
 
-import com.example.server.request.Request;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,5 +30,16 @@ public class ClassroomService {
         Classroom classroom = classroomRepository.findById(classId).orElseThrow();
         classroomRepository.removeById(classId);
         return classroom;
+    }
+    //수정
+    public void classroomUpdate(Long classId, ClassroomStatus status){
+        classroomRepository.findById(classId)
+                .orElseThrow()
+                .UpdateStatus(status);
+    }
+    public void classroomUpdate(Long classId, String name){
+        classroomRepository.findById(classId)
+                .orElseThrow()
+                .UpdateName(name);
     }
 }

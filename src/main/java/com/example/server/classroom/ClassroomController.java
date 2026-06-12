@@ -1,7 +1,6 @@
 package com.example.server.classroom;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,5 +30,17 @@ public class ClassroomController {
     @GetMapping("/Delete")
     public Classroom classroomDelete(@RequestParam Long id){
         return classroomService.classroomDelete(id);
+    }
+
+    @GetMapping("/UpdateName")
+    public String UpdateName(@RequestParam Long id, @RequestParam String name){
+        classroomService.classroomUpdate(id, name);
+        return "수정이 성공되었습니다";
+    }
+
+    @GetMapping("/UpdateStatus")
+    public String updateStatus(@RequestParam Long id,@RequestParam ClassroomStatus status){
+        classroomService.classroomUpdate(id, status);
+        return "수정이 성공되었습니다";
     }
 }
