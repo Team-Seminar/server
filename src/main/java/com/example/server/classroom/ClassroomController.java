@@ -27,4 +27,9 @@ public class ClassroomController {
     public Classroom classroomCreate(@RequestParam String name){
         return classroomService.classroomCreate(name);
     }
+
+    @GetMapping("/Delete")
+    public Classroom classroomDelete(@RequestParam Long id){
+        return classroomService.classroomDelete(id);
+    }
 }
