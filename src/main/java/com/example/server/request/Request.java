@@ -33,6 +33,10 @@ public class Request {
     @ManyToOne
     private Classroom classroom;
 
+    @NotBlank
+    @NonNull
+    private String name; //예약자 명
+
     public void updateReason(String reason){
         this.reason=reason;
     }
