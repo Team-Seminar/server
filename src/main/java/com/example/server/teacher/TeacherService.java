@@ -1,12 +1,12 @@
 package com.example.server.teacher;
 
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service
-@NoArgsConstructor
 public class TeacherService {
 
     private TeacherRepository teacherRepository;
