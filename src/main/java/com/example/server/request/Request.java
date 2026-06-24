@@ -1,7 +1,6 @@
 package com.example.server.request;
 
 import com.example.server.classroom.Classroom;
-import com.example.server.request.requestStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

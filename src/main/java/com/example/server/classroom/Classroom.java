@@ -25,7 +25,4 @@ public class Classroom {
     public void UpdateStatus(ClassroomStatus newStatus){
         this.status=newStatus;
     }
-    public void UpdateName(String newName){
-        this.name=newName;
-    }
 }

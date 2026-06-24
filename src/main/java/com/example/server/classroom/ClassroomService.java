@@ -1,5 +1,6 @@
 package com.example.server.classroom;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -7,6 +8,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ClassroomService {
     final private ClassroomRepository classroomRepository;
 
@@ -36,10 +38,5 @@ public class ClassroomService {
         classroomRepository.findById(classId)
                 .orElseThrow()
                 .UpdateStatus(status);
-    }
-    public void classroomUpdate(Long classId, String name){
-        classroomRepository.findById(classId)
-                .orElseThrow()
-                .UpdateName(name);
     }
 }
