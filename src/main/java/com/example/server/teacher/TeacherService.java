@@ -11,17 +11,15 @@ public class TeacherService {
 
     private TeacherRepository teacherRepository;
 
-    public UUID login(String name, String pw) {
-        // 1. 이름으로 선생님을 찾고, 없으면 예외 발생
+    public UUID login(String name, String pw) { //틀렸다면 위에서 에러를 던져 반환값까지 못가게 하는 방식
         Teacher teacher = teacherRepository.findByName(name)
                 .orElseThrow(() -> new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다."));
 
-        // 2. 비밀번호 비교 후 다르면 예외 발생
-        if (!teacher.getPw().equals(pw)) {
+        if (!teacher.getPw().equals(pw)) { //pw가 틀렸다면
             throw new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다.");
         }
 
-        // 3. 성공 시에만 UUID 반환
+        // 성공 시에 ID 반환
         return teacher.getId();
     }
 }
