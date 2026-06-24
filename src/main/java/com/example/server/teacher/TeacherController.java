@@ -1,6 +1,9 @@
 package com.example.server.teacher;
 
+import com.example.server.DTO.TeacherJoinDTO;
 import com.example.server.DTO.TeacherLoginDTO;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,8 +18,16 @@ public class TeacherController {
         this.teacherService = teacherService;
     }
 
-    @RequestMapping("/login")
+    @GetMapping("/login")
     public UUID Login(TeacherLoginDTO teacherLoginDTO){
         return teacherService.login(teacherLoginDTO.getName(),teacherLoginDTO.getPw());
+    }
+
+    @PostMapping()
+    public String Join(TeacherJoinDTO teacherJoinDTO){
+        if (!teacherJoinDTO.getTeacherPw().equals("iamteacher")){
+            return "선생님이 아닙니다.";
+        }
+        return teacherService.Join(teacherJoinDTO.getName(),teacherJoinDTO.getPw());
     }
 }
