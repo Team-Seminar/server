@@ -22,4 +22,10 @@ public class TeacherService {
         // 성공 시에 ID 반환
         return teacher.getId();
     }
+
+    public String Join(String name, String pw){
+        Teacher teacher=new Teacher(name, pw);
+        teacherRepository.save(teacher);
+        return "회원가입 성공";
+    }
 }
