@@ -2,10 +2,7 @@ package com.example.server.teacher;
 
 import com.example.server.DTO.TeacherJoinDTO;
 import com.example.server.DTO.TeacherLoginDTO;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -19,7 +16,7 @@ public class TeacherController {
     }
 
     @GetMapping("/login")
-    public UUID Login(TeacherLoginDTO teacherLoginDTO){
+    public UUID Login(@RequestBody TeacherLoginDTO teacherLoginDTO){
         return teacherService.login(teacherLoginDTO.getName(),teacherLoginDTO.getPw());
     }
 
