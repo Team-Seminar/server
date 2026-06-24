@@ -21,7 +21,7 @@ public class TeacherController {
     }
 
     @PostMapping()
-    public String Join(TeacherJoinDTO teacherJoinDTO){
+    public String Join(@RequestBody TeacherJoinDTO teacherJoinDTO){
         if (!teacherJoinDTO.getTeacherPw().equals("iamteacher")){
             return "선생님이 아닙니다.";
         }
