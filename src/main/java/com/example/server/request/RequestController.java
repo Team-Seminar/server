@@ -4,10 +4,7 @@ import com.example.server.classroom.Classroom;
 import com.example.server.classroom.ClassroomService;
 import com.example.server.classroom.ClassroomStatus;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -49,7 +46,7 @@ public class RequestController {
         requestService.requestUpdate(id, reason);
     }
     @GetMapping("/UpdateStatus")
-    public void UpdateStatus(@RequestParam Long id, @RequestParam requestStatus status){
+    public void UpdateStatus(@RequestHeader("Authorization") String token, @RequestParam Long id, @RequestParam requestStatus status){
         requestService.requestUpdate(id, status);
     }
 
