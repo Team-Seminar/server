@@ -2,6 +2,7 @@ package com.example.server.classroom;
 
 import com.example.server.request.Request;
 import com.example.server.request.RequestService;
+import com.example.server.request.requestStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,7 @@ public class ClassroomService {
         if (status==ClassroomStatus.use){
             List<Request> requestList=requestService.requestGet(classroomGet(classId));
             for (int i = 0; i < requestList.size(); i++) {
-                requestService.requestDelete(requestList.get(i).getId());
+                requestService.requestUpdate(requestList.get(i).getId(), requestStatus.REFUSE);
             }
         }
     }
