@@ -17,4 +17,8 @@ public class TeacherToken extends TokenManager {
         return UUID.fromString(claims.getId());
     }
 
+    public String getRoll(String token){
+        Claims claims=getToken(token);
+        return claims.get("roll",String.class);
+    }
 }
