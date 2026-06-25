@@ -1,5 +1,7 @@
 package com.example.server.global;
 
+import io.jsonwebtoken.Claims;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -9,6 +11,10 @@ public class TeacherToken extends TokenManager {
         Map<String ,Object> content=new HashMap<String,Object>();
         content.put("roll",roll);
         return createToken(id.toString(), content);
+    }
+    public UUID getId(String token){
+        Claims claims=getToken(token);
+        return UUID.fromString(claims.getId());
     }
 
 }
