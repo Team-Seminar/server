@@ -20,7 +20,7 @@ public class RequestController {
     final private ClassroomService classroomService;
     //생성
     @GetMapping("/Create")
-    public String RequestCreate(@RequestParam Long tableId, @RequestParam String reason, @RequestParam int time){
+    public String RequestCreate(@RequestParam Long tableId,@RequestParam String name, @RequestParam String reason, @RequestParam int time){
         LocalTime nowTime=LocalTime.now();
         if (nowTime.getHour()<6 || nowTime.getHour()>18){
             return "예약 가능 시간이 아닙니다";
@@ -29,7 +29,7 @@ public class RequestController {
         if(classroom.getStatus() != ClassroomStatus.empty){
             return "예약이 불가합니다";
         }
-        requestService.requestCreate(time, reason, classroom);
+        requestService.requestCreate(time, name,  reason, classroom);
         return "예약 성공";
     }
     //읽기
