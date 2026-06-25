@@ -16,7 +16,7 @@ public class TeacherController {
     }
 
     @GetMapping("/login")
-    public UUID Login(@RequestBody TeacherLoginDTO teacherLoginDTO){
+    public String Login(@RequestBody TeacherLoginDTO teacherLoginDTO){
         return teacherService.login(teacherLoginDTO.getName(),teacherLoginDTO.getPw());
     }
 
