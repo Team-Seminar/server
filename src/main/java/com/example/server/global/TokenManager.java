@@ -9,15 +9,15 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-public interface TokenManager {
-    @Value("${jwt.secret.JWT_SECRET}")
-    String SECRET_KEY_STRING; //보안 키
-    SecretKey SECRET_KEY= Keys.hmacShaKeyFor(SECRET_KEY_STRING.getBytes(StandardCharsets.UTF_8)); //암호화
-    Long VALID_TIME= 30 * 60 * 1000L; //토큰 허용 시간(30분)
+public class TokenManager {
+    @Value("${jwt.secret-key}")
+    static private String SECRET_KEY_STRING; //보안 키
+    final private SecretKey SECRET_KEY= Keys.hmacShaKeyFor(SECRET_KEY_STRING.getBytes(StandardCharsets.UTF_8)); //암호화
+    final static private Long VALID_TIME= 30 * 60 * 1000L; //토큰 허용 시간(30분)
 
-    default String createToken(String id, Map<String, Objects> tokenContent){
-        Date now=new Date();
-        Date expirationTime=new Date(now.getTime()+VALID_TIME);
+    public String createToken(String id, Map<String, Objects> tokenContent){
+        Date now = new Date();
+        Date expirationTime = new Date(now.getTime()+VALID_TIME);
         if (id==null || id.isEmpty()){
             id= UUID.randomUUID().toString();
         }
@@ -30,7 +30,7 @@ public interface TokenManager {
                 .compact();
 
     }
-    default Claims getToken(String token){
+    public Claims getToken(String token){
         try {
             // Bearer 접두사 제거
             if (token != null && token.startsWith("Bearer ")) {
