@@ -20,7 +20,9 @@ public class RequestService {
     public List<Request> requestGetAll(){
         return requestRepository.findAll();
     }
-
+    public List<Request> requestGet(Classroom classroom){
+        return requestRepository.findAllByClassroom(classroom);
+    }
     //생성
     public void requestCreate(int time, String name, String reason, Classroom classroom){
         Request request = new Request(time, reason, classroom, name);

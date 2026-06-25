@@ -1,7 +1,9 @@
 package com.example.server.classroom;
 
+import com.example.server.request.RequestService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Request;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,5 +40,7 @@ public class ClassroomService {
         classroomRepository.findById(classId)
                 .orElseThrow()
                 .UpdateStatus(status);
+        if (status==ClassroomStatus.use){
+        }
     }
 }
