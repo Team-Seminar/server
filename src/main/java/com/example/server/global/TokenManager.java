@@ -15,7 +15,7 @@ public class TokenManager {
     final private SecretKey SECRET_KEY= Keys.hmacShaKeyFor(SECRET_KEY_STRING.getBytes(StandardCharsets.UTF_8)); //암호화
     final static private Long VALID_TIME= 30 * 60 * 1000L; //토큰 허용 시간(30분)
 
-    public String createToken(String id, Map<String, Objects> tokenContent){
+    public String createToken(String id, Map<String, Object> tokenContent){
         Date now = new Date();
         Date expirationTime = new Date(now.getTime()+VALID_TIME);
         if (id==null || id.isEmpty()){
