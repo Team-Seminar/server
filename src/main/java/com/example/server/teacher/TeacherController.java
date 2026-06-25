@@ -2,6 +2,9 @@ package com.example.server.teacher;
 
 import com.example.server.DTO.TeacherJoinDTO;
 import com.example.server.DTO.TeacherLoginDTO;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -16,8 +19,12 @@ public class TeacherController {
     }
 
     @GetMapping("/login")
-    public String Login(@RequestBody TeacherLoginDTO teacherLoginDTO){
-        return teacherService.login(teacherLoginDTO.getName(),teacherLoginDTO.getPw());
+    public ResponseEntity<?> Login(@RequestBody TeacherLoginDTO teacherLoginDTO){
+        String token=teacherService.login(teacherLoginDTO.getName(),teacherLoginDTO.getPw());
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + token);
+
+        return new ResponseEntity<>("Login Successful", headers, HttpStatus.OK);
     }
 
     @PostMapping()
