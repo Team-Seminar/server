@@ -1,11 +1,13 @@
 package com.example.server.global;
 
 import io.jsonwebtoken.Claims;
+import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@NoArgsConstructor
 public class TeacherToken extends TokenManager {
     public String create(UUID id,String roll){
         Map<String ,Object> content=new HashMap<String,Object>();
