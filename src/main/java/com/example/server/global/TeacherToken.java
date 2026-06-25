@@ -9,16 +9,18 @@ import java.util.UUID;
 
 @NoArgsConstructor
 public class TeacherToken extends TokenManager {
+    //토큰 생성
     public String create(UUID id,String roll){
         Map<String ,Object> content=new HashMap<String,Object>();
         content.put("roll",roll);
         return createToken(id.toString(), content);
     }
+    //토큰 주인 조회
     public UUID getId(String token){
         Claims claims=getToken(token);
         return UUID.fromString(claims.getId());
     }
-
+    //토큰에서 roll 값 조회
     public String getRoll(String token){
         Claims claims=getToken(token);
         return claims.get("roll",String.class);
