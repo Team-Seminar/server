@@ -1,5 +1,6 @@
 package com.example.server.classroom;
 
+import com.example.server.global.TeacherToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,10 @@ public class ClassroomController {
     }
 
     @PatchMapping("/{id}")
-    public String updateStatus(@PathVariable Long id,@RequestParam ClassroomStatus status){
+    public String updateStatus(@PathVariable Long id,@RequestParam ClassroomStatus status, @RequestHeader("Authorization") String token){
+        if(! new TeacherToken().getRoll(token).equals("teacher")){
+            return "권한이 없습니다.";
+        }
         classroomService.classroomUpdate(id, status);
         return "수정이 성공되었습니다";
     }
