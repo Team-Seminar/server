@@ -1,9 +1,9 @@
 package com.example.server.classroom;
 
+import com.example.server.request.Request;
 import com.example.server.request.RequestService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Request;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +13,7 @@ import java.util.List;
 @Transactional
 public class ClassroomService {
     final private ClassroomRepository classroomRepository;
+    final private RequestService requestService;
 
     //읽기
     public Classroom classroomGet(Long classId){
@@ -41,6 +42,10 @@ public class ClassroomService {
                 .orElseThrow()
                 .UpdateStatus(status);
         if (status==ClassroomStatus.use){
+            List<Request> requestList=requestService.requestGet(classroomGet(classId));
+            for (int i = 0; i < requestList.size(); i++) {
+                requestService.requestDelete(requestList.get(i).getId());
+            }
         }
     }
 }
