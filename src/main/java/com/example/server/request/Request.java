@@ -37,9 +37,6 @@ public class Request {
     @NonNull
     private String name; //예약자 명
 
-    public void updateReason(String reason){
-        this.reason=reason;
-    }
     public void updateStatus(requestStatus status){
         this.status=status;
     }

@@ -41,10 +41,6 @@ public class RequestController {
     }
 
     //수정
-    @GetMapping("/UdateReason")
-    public void UpdateReason(@RequestParam Long id, @RequestParam String reason){
-        requestService.requestUpdate(id, reason);
-    }
     @GetMapping("/UpdateStatus")
     public void UpdateStatus(@RequestHeader("Authorization") String token, @RequestParam Long id, @RequestParam requestStatus status){
         requestService.requestUpdate(id, status);

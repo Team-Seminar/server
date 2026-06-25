@@ -36,11 +36,6 @@ public class RequestService {
 
     //업데이트
     @Transactional
-    public void requestUpdate(Long id, String reason){
-        Request request = requestRepository.findById(id).orElseThrow();
-        request.updateReason(reason);
-    }
-    @Transactional
     public void requestUpdate(Long id, requestStatus status){
         Request request = requestRepository.findById(id).orElseThrow();
         request.updateStatus(status);
