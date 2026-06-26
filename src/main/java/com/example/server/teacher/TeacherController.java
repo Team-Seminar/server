@@ -28,13 +28,14 @@ public class TeacherController {
     }
 
     @PostMapping()
-    public ResponseEntity<Map<String, String>> Join(@RequestBody TeacherJoinDTO teacherJoinDTO){
-        Map<String,String> response= new HashMap<>();
+    public ResponseEntity<?> Join(@RequestBody TeacherJoinDTO teacherJoinDTO){
+        ResponseClass responseClass=new ResponseClass();
         if (!Objects.equals(teacherJoinDTO.getTeacherPw(),"iamteacher")){
-            response.put("message","선생님이 아닙니다.");
-            return ResponseEntity.ok(response);
+            responseClass.addData("message","선생님이 아닙니다.");
         }
-        response.put("message", teacherService.Join(teacherJoinDTO.getName(),teacherJoinDTO.getPw()));
-        return ResponseEntity.ok(response);
+        else{
+            responseClass.addData("message", teacherService.Join(teacherJoinDTO.getName(),teacherJoinDTO.getPw()));
+        }
+        return responseClass.responseReturn();
     }
 }
