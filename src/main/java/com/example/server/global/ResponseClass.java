@@ -16,7 +16,7 @@ public class ResponseClass {
     public void addData(String key, Object value){
         this.data.put(key,value);
     }
-    public ResponseEntity<Map<String,Object>> responseReturn(){
+    public ResponseEntity<?> responseReturn(){
         return ResponseEntity.ok(this.data);
     }
     public ResponseEntity<?> massageReturn(String massage){

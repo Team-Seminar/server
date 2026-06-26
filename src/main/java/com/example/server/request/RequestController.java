@@ -3,11 +3,13 @@ package com.example.server.request;
 import com.example.server.classroom.Classroom;
 import com.example.server.classroom.ClassroomService;
 import com.example.server.classroom.ClassroomStatus;
+import com.example.server.global.security.JWT.TeacherToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,6 +17,7 @@ import java.util.List;
 public class RequestController {
     final private RequestService requestService;
     final private ClassroomService classroomService;
+    final private TeacherToken teacherToken;
     //생성
     @GetMapping("/Create")
     public String RequestCreate(@RequestParam Long tableId,@RequestParam String name, @RequestParam String reason, @RequestParam int time){
@@ -43,6 +46,9 @@ public class RequestController {
     //수정
     @GetMapping("/UpdateStatus")
     public void UpdateStatus(@RequestHeader("Authorization") String token, @RequestParam Long id, @RequestParam requestStatus status){
+        if(!Objects.equals(teacherToken.getRole(token),"teacher")){
+            throw new IllegalArgumentException("권한이 없습니다");
+        }
         requestService.requestUpdate(id, status);
     }
 

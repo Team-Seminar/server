@@ -1,6 +1,6 @@
-package com.example.server.global.security;
+package com.example.server.global.security.JWT;
 
-import com.example.server.global.TokenManager;
+import com.example.server.global.security.TokenManager;
 import io.jsonwebtoken.Claims;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ public class TeacherToken extends TokenManager {
     //토큰 생성
     public String create(UUID id,String roll){
         Map<String ,Object> content=new HashMap<String,Object>();
-        content.put("roll",roll);
+        content.put("role",roll);
         return createToken(id.toString(), content);
     }
     //토큰 주인 조회
@@ -24,8 +24,8 @@ public class TeacherToken extends TokenManager {
         return UUID.fromString(claims.getId());
     }
     //토큰에서 roll 값 조회
-    public String getRoll(String token){
+    public String getRole(String token){
         Claims claims=getToken(token);
-        return claims.get("roll",String.class);
+        return claims.get("role",String.class);
     }
 }

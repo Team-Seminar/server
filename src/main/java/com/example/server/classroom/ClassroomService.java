@@ -38,15 +38,10 @@ public class ClassroomService {
         return classroom;
     }
     //수정
+    @Transactional
     public void classroomUpdate(Long classId, ClassroomStatus status){
         classroomRepository.findById(classId)
                 .orElseThrow()
                 .UpdateStatus(status);
-        if (status==ClassroomStatus.use){
-            List<Request> requestList=requestService.requestGet(classroomGet(classId));
-            for (int i = 0; i < requestList.size(); i++) { //모든 예약 거절 상태로 변경
-                requestService.requestUpdate(requestList.get(i).getId(), requestStatus.REFUSE);
-            }
-        }
     }
 }

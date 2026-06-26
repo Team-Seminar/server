@@ -1,4 +1,4 @@
-package com.example.server.global;
+package com.example.server.global.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -10,6 +10,10 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+
+//id는 subject에 저장
+//role는 역할이나 권한
+
 
 @Component
 public class TokenManager {
