@@ -2,11 +2,13 @@ package com.example.server.global;
 
 import io.jsonwebtoken.Claims;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@Component
 @NoArgsConstructor
 public class TeacherToken extends TokenManager {
     //토큰 생성

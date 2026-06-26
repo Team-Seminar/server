@@ -11,6 +11,7 @@ import java.util.List;
 @RequestMapping("api/v1/Classrooms")
 public class ClassroomController {
     final private ClassroomService classroomService;
+    final private TeacherToken teacherToken;
     @GetMapping("/{id}")
     public Classroom classroomGet(@PathVariable Long id){
         return classroomService.classroomGet(id);
@@ -32,7 +33,7 @@ public class ClassroomController {
 
     @PatchMapping("/{id}")
     public String updateStatus(@PathVariable Long id,@RequestParam ClassroomStatus status, @RequestHeader("Authorization") String token){
-        if(! new TeacherToken().getRoll(token).equals("teacher")){
+        if(! teacherToken.getRoll(token).equals("teacher")){
             return "권한이 없습니다.";
         }
         classroomService.classroomUpdate(id, status);

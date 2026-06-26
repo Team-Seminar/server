@@ -1,5 +1,6 @@
 package com.example.server.teacher;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
@@ -20,6 +21,7 @@ public class Teacher {
 
     @NotBlank
     @NonNull
+    @Column(unique = true)
     private String name;
     @NotBlank
     @NonNull

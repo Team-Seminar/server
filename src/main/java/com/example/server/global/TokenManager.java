@@ -3,18 +3,24 @@ package com.example.server.global;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+@Component
 public class TokenManager {
     @Value("${jwt.secret-key}")
-    static private String SECRET_KEY_STRING; //보안 키
-    final private SecretKey SECRET_KEY= Keys.hmacShaKeyFor(SECRET_KEY_STRING.getBytes(StandardCharsets.UTF_8)); //암호화
+    private String SECRET_KEY_STRING; //보안 키
+    private SecretKey SECRET_KEY;
     final static private Long VALID_TIME= 30 * 60 * 1000L; //토큰 허용 시간(30분)
-
+    @PostConstruct //Value 후 자동 실행
+    public void init() {
+        SECRET_KEY = Keys.hmacShaKeyFor(SECRET_KEY_STRING.getBytes(StandardCharsets.UTF_8)); //암호화
+    }
     public String createToken(String id, Map<String, Object> tokenContent){
         Date now = new Date();
         Date expirationTime = new Date(now.getTime()+VALID_TIME);
