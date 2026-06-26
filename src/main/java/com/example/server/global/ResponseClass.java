@@ -19,4 +19,7 @@ public class ResponseClass {
     public ResponseEntity<Map<String,Object>> responseReturn(){
         return ResponseEntity.ok(this.data);
     }
+    public ResponseEntity<?> massageReturn(String massage){
+        return ResponseEntity.ok(new HashMap<String,String>().put("massage",massage));
+    }
 }
