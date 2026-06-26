@@ -1,5 +1,6 @@
-package com.example.server.global;
+package com.example.server.global.security;
 
+import com.example.server.global.TokenManager;
 import io.jsonwebtoken.Claims;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;

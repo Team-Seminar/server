@@ -1,6 +1,7 @@
-package com.example.server.DTO;
+package com.example.server.global;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.ResponseEntity;
 
@@ -9,7 +10,8 @@ import java.util.Map;
 
 @Getter
 @Setter
-public class ResponseDTO {
+@NoArgsConstructor
+public class ResponseClass {
     Map<String,Object> data=new HashMap<>();
     public void addData(String key, Object value){
         this.data.put(key,value);

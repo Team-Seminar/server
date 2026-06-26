@@ -1,6 +1,6 @@
 package com.example.server.classroom;
 
-import com.example.server.global.TeacherToken;
+import com.example.server.global.security.TeacherToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

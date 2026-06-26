@@ -1,17 +1,14 @@
 package com.example.server.teacher;
 
+import com.example.server.global.ResponseClass;
 import com.example.server.DTO.TeacherJoinDTO;
 import com.example.server.DTO.TeacherLoginDTO;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 
 @RequestMapping("api/v1/teachers")
 @RestController
@@ -22,14 +19,12 @@ public class TeacherController {
     public TeacherController(TeacherService teacherService) {
         this.teacherService = teacherService;
     }
-
     @PostMapping("/login")
     public ResponseEntity<?> Login(@RequestBody TeacherLoginDTO teacherLoginDTO){
+        ResponseClass responseClass=new ResponseClass();
         String token=teacherService.login(teacherLoginDTO.getName(),teacherLoginDTO.getPw());
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + token);
-
-        return new ResponseEntity<>("Login Successful", headers, HttpStatus.OK);
+        responseClass.addData("Authorization",token);
+        return responseClass.responseReturn();
     }
 
     @PostMapping()

@@ -1,11 +1,9 @@
 package com.example.server.teacher;
 
-import com.example.server.global.TeacherToken;
+import com.example.server.global.security.TeacherToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
