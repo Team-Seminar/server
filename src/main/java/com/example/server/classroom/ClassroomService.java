@@ -1,8 +1,5 @@
 package com.example.server.classroom;
 
-import com.example.server.request.Request;
-import com.example.server.request.RequestService;
-import com.example.server.request.requestStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +11,6 @@ import java.util.List;
 @Transactional
 public class ClassroomService {
     final private ClassroomRepository classroomRepository;
-    final private RequestService requestService;
 
     //읽기
     public Classroom classroomGet(Long classId){

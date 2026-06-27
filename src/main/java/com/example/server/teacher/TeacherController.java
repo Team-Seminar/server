@@ -13,7 +13,6 @@ import java.util.Objects;
 @RequestMapping("api/v1/teachers")
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://127.0.0.1:5500") //프론트 문 열음
 public class TeacherController {
     final private TeacherService teacherService;
 
