@@ -3,7 +3,9 @@ package com.example.server.request;
 import com.example.server.classroom.Classroom;
 import com.example.server.classroom.ClassroomService;
 import com.example.server.classroom.ClassroomStatus;
+import com.example.server.global.ResponseClass;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,17 +20,18 @@ public class RequestController {
     final private ClassroomService classroomService;
     //생성
     @GetMapping("/Create")
-    public String RequestCreate(@RequestParam Long tableId,@RequestParam String name, @RequestParam String reason, @RequestParam int time){
+    public ResponseEntity<?> RequestCreate(@RequestParam Long tableId, @RequestParam String name, @RequestParam String reason, @RequestParam int time){
+        ResponseClass responseClass=new ResponseClass();
         LocalTime nowTime=LocalTime.now();
         if (nowTime.getHour()<6 || nowTime.getHour()>18){
-            return "예약 가능 시간이 아닙니다";
+            return responseClass.massageReturn("예약 가능 시간이 아닙니다");
         }
         Classroom classroom =classroomService.classroomGet(tableId);
         if(classroom.getStatus() != ClassroomStatus.EMPTY){
-            return "예약이 불가합니다";
+            return responseClass.massageReturn("예약이 불가합니다");
         }
         requestService.requestCreate(time, name,  reason, classroom);
-        return "예약 성공";
+        return responseClass.massageReturn("예약 성공");
     }
     //읽기
     @GetMapping("/Get")
