@@ -17,7 +17,12 @@ public class ResponseClass {
         this.data.put(key,value);
     }
     public ResponseEntity<?> responseReturn(){
-        return ResponseEntity.ok(this.data);
+        Map<String,Object> temp=this.data;
+        this.data.clear();
+        return ResponseEntity.ok(temp);
+    }
+    public ResponseEntity<?> oneResponseReturn(String key, Object value){
+        return ResponseEntity.ok(new HashMap<String,Object>().put(key, value));
     }
     public ResponseEntity<?> massageReturn(String massage){
         return ResponseEntity.ok(new HashMap<String,String>().put("massage",massage));
