@@ -22,4 +22,7 @@ public class ResponseClass {
     public ResponseEntity<?> massageReturn(String massage){
         return ResponseEntity.ok(new HashMap<String,String>().put("massage",massage));
     }
+    public ResponseEntity<?> tokenReturn(String token){
+        return ResponseEntity.ok(new HashMap<String,String>().put("Authorization",token));
+    }
 }
