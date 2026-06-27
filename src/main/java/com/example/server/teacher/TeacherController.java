@@ -3,28 +3,27 @@ package com.example.server.teacher;
 import com.example.server.global.ResponseClass;
 import com.example.server.DTO.TeacherJoinDTO;
 import com.example.server.DTO.TeacherLoginDTO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 @RequestMapping("api/v1/teachers")
 @RestController
+@RequiredArgsConstructor
 @CrossOrigin(origins = "http://127.0.0.1:5500") //프론트 문 열음
 public class TeacherController {
     final private TeacherService teacherService;
 
-    public TeacherController(TeacherService teacherService) {
-        this.teacherService = teacherService;
-    }
+    @Value("${teacher-key}")
+    private String TEACHER_KEY;
+    ResponseClass responseClass=new ResponseClass();
+
     @PostMapping("/login")
     public ResponseEntity<?> Login(@RequestBody TeacherLoginDTO teacherLoginDTO){
-        ResponseClass responseClass=new ResponseClass();
-        String token=teacherService.login(teacherLoginDTO.getName(),teacherLoginDTO.getPw());
-        responseClass.addData("Authorization",token);
+        responseClass.tokenReturn(teacherService.login(teacherLoginDTO.getName(),teacherLoginDTO.getPw()));
         return responseClass.responseReturn();
     }
 
@@ -32,7 +31,7 @@ public class TeacherController {
     @PostMapping()
     public ResponseEntity<?> Join(@RequestBody TeacherJoinDTO teacherJoinDTO){
         ResponseClass responseClass=new ResponseClass();
-        if (!Objects.equals(teacherJoinDTO.getTeacherPw(),"iamteacher")){
+        if (!Objects.equals(teacherJoinDTO.getTeacherPw(), TEACHER_KEY)){
             return responseClass.massageReturn("선생님이 아닙니다.");
         }
         return responseClass.massageReturn(teacherService.Join(teacherJoinDTO.getName(),teacherJoinDTO.getPw()));
