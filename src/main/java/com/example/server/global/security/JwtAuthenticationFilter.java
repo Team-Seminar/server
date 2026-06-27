@@ -6,11 +6,15 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -33,12 +37,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 // 복호화 및 권한 추출
                 Claims claims = tokenManager.getToken(token);
                 String id = claims.get("sub",String.class);
-                List<?> role=claims.get("role",List.class);
+                List<String> roles=claims.get("role",List.class);
 
+                List<SimpleGrantedAuthority> authorityList=new ArrayList<>();
+                for (String role:roles){
+                    SimpleGrantedAuthority authority= new SimpleGrantedAuthority(role);
+                    authorityList.add(authority);
+                }
 
-                SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role);
                 UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(id, null, List.of(authority));
+                        new UsernamePasswordAuthenticationToken(id, null, authorityList);
 
                 // 3. 시큐리티 보관함에 저장
                 SecurityContextHolder.getContext().setAuthentication(authentication);
