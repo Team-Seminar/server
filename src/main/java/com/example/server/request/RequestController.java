@@ -5,6 +5,7 @@ import com.example.server.classroom.ClassroomService;
 import com.example.server.classroom.ClassroomStatus;
 import com.example.server.global.security.JWT.TeacherToken;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalTime;
@@ -44,11 +45,9 @@ public class RequestController {
     }
 
     //수정
+    @PreAuthorize("hasAuthority('teacher')")
     @GetMapping("/UpdateStatus")
     public void UpdateStatus(@RequestHeader("Authorization") String token, @RequestParam Long id, @RequestParam requestStatus status){
-        if(!Objects.equals(teacherToken.getRole(token),"teacher")){
-            throw new IllegalArgumentException("권한이 없습니다");
-        }
         requestService.requestUpdate(id, status);
     }
 

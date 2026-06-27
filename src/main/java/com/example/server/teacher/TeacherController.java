@@ -4,6 +4,7 @@ import com.example.server.global.ResponseClass;
 import com.example.server.DTO.TeacherJoinDTO;
 import com.example.server.DTO.TeacherLoginDTO;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -26,6 +27,7 @@ public class TeacherController {
         responseClass.addData("Authorization",token);
         return responseClass.responseReturn();
     }
+
 
     @PostMapping()
     public ResponseEntity<?> Join(@RequestBody TeacherJoinDTO teacherJoinDTO){
