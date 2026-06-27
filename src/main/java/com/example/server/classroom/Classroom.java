@@ -21,7 +21,7 @@ public class Classroom {
     @NotBlank
     private String name;
 
-    private ClassroomStatus status = ClassroomStatus.empty;
+    private ClassroomStatus status = ClassroomStatus.EMPTY;
     public void UpdateStatus(ClassroomStatus newStatus){
         this.status=newStatus;
     }

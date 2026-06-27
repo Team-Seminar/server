@@ -24,7 +24,7 @@ public class RequestController {
             return "예약 가능 시간이 아닙니다";
         }
         Classroom classroom =classroomService.classroomGet(tableId);
-        if(classroom.getStatus() != ClassroomStatus.empty){
+        if(classroom.getStatus() != ClassroomStatus.EMPTY){
             return "예약이 불가합니다";
         }
         requestService.requestCreate(time, name,  reason, classroom);
