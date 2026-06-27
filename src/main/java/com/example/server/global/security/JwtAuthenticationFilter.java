@@ -11,6 +11,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -28,12 +30,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (StringUtils.hasText(token)) {
             try {
-                // 1. 복호화를 시도합니다. (내부적으로 검증이 같이 일어남!)
-                Map<String,Object> map = tokenManager.getToken(token);
+                // 복호화 및 권한 추출
+                Claims claims = tokenManager.getToken(token);
+                String id = claims.get("sub",String.class);
+                List<?> role=claims.get("role",List.class);
 
-                // 2. 복호화에 성공했다는 건 안전하다는 뜻이니 바로 권한을 추출합니다.
 
-                SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
+                SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role);
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(id, null, List.of(authority));
 
