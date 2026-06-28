@@ -1,5 +1,6 @@
 package com.example.server.request;
 
+import com.example.server.DTO.RequestCreateDTO;
 import com.example.server.classroom.Classroom;
 import com.example.server.classroom.ClassroomService;
 import com.example.server.classroom.ClassroomStatus;
@@ -20,7 +21,12 @@ public class RequestController {
     final private ClassroomService classroomService;
     //생성
     @PostMapping("/")
-    public ResponseEntity<?> RequestCreate(@RequestParam Long tableId, @RequestParam String name, @RequestParam String reason, @RequestParam int time){
+    public ResponseEntity<?> RequestCreate(@RequestBody RequestCreateDTO requestCreateDTO){
+        Long tableId=requestCreateDTO.getTableId();
+        String name=requestCreateDTO.getName();
+        String reason=requestCreateDTO.getReason();
+        int time=requestCreateDTO.getTime();
+
         ResponseClass responseClass=new ResponseClass();
         LocalTime nowTime=LocalTime.now();
         if (nowTime.getHour()<6 || nowTime.getHour()>18){
