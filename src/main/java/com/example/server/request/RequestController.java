@@ -52,13 +52,13 @@ public class RequestController {
 
     //수정
     @PreAuthorize("hasAuthority('teacher')")
-    @GetMapping("/UpdateStatus")
+    @PatchMapping("/UpdateStatus")
     public void UpdateStatus(@RequestHeader("Authorization") String token, @RequestParam Long id, @RequestParam requestStatus status){
         requestService.requestUpdate(id, status);
     }
 
     //삭제
-    @GetMapping("/Delete")
+    @DeleteMapping("/Delete")
     public Request DeleteRequest(@RequestParam Long id){
         return requestService.requestDelete(id);
     }
