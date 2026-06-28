@@ -22,8 +22,7 @@ public class TeacherController {
 
     @PostMapping("/login")
     public ResponseEntity<?> Login(@RequestBody TeacherLoginDTO teacherLoginDTO){
-        responseClass.tokenReturn(teacherService.login(teacherLoginDTO.getName(),teacherLoginDTO.getPw()));
-        return responseClass.responseReturn();
+        return responseClass.tokenReturn(teacherService.login(teacherLoginDTO.getName(),teacherLoginDTO.getPw()));
     }
 
 

@@ -32,6 +32,8 @@ public class ResponseClass {
         return ResponseEntity.ok(data);
     }
     public ResponseEntity<?> tokenReturn(String token){
-        return ResponseEntity.ok(new HashMap<String,String>().put("Authorization",token));
+        Map<String,String> data=new HashMap<String,String>();
+        data.put("Authorization",token);
+        return ResponseEntity.ok(data);
     }
 }
