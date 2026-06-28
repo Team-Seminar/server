@@ -19,7 +19,7 @@ public class RequestController {
     final private RequestService requestService;
     final private ClassroomService classroomService;
     //생성
-    @GetMapping("/Create")
+    @PostMapping("/")
     public ResponseEntity<?> RequestCreate(@RequestParam Long tableId, @RequestParam String name, @RequestParam String reason, @RequestParam int time){
         ResponseClass responseClass=new ResponseClass();
         LocalTime nowTime=LocalTime.now();
