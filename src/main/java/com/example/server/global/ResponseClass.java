@@ -22,7 +22,9 @@ public class ResponseClass {
         return ResponseEntity.ok(temp);
     }
     public ResponseEntity<?> oneResponseReturn(String key, Object value){
-        return ResponseEntity.ok(new HashMap<String,Object>().put(key, value));
+        Map<String,Object> data=new HashMap<>();
+        data.put(key, value);
+        return ResponseEntity.ok(data);
     }
     public ResponseEntity<?> massageReturn(String massage){
         Map<String,String> data=new HashMap<String,String>();
