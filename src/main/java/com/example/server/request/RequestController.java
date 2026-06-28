@@ -40,12 +40,12 @@ public class RequestController {
         return responseClass.massageReturn("예약 성공");
     }
     //읽기
-    @GetMapping("/Get")
+    @GetMapping("/")
     public Request RequestGet(@RequestParam Long id){
         return requestService.requestGet(id);
     }
 
-    @GetMapping("/GetAll")
+    @GetMapping("/All")
     public List<Request> RequestGetAll(){
         return requestService.requestGetAll();
     }
