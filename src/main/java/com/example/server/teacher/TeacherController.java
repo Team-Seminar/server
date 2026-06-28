@@ -31,6 +31,7 @@ public class TeacherController {
     public ResponseEntity<?> Join(@RequestBody TeacherJoinDTO teacherJoinDTO){
         ResponseClass responseClass=new ResponseClass();
         if (!Objects.equals(teacherJoinDTO.getTeacherPw(), TEACHER_KEY)){
+            System.out.println("선생님이 아닙니다.");
             return responseClass.massageReturn("선생님이 아닙니다.");
         }
         return responseClass.massageReturn(teacherService.Join(teacherJoinDTO.getName(),teacherJoinDTO.getPw()));

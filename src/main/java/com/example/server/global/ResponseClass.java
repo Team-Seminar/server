@@ -25,7 +25,9 @@ public class ResponseClass {
         return ResponseEntity.ok(new HashMap<String,Object>().put(key, value));
     }
     public ResponseEntity<?> massageReturn(String massage){
-        return ResponseEntity.ok(new HashMap<String,String>().put("massage",massage));
+        Map<String,String> data=new HashMap<String,String>();
+        data.put("massage",massage);
+        return ResponseEntity.ok(data);
     }
     public ResponseEntity<?> tokenReturn(String token){
         return ResponseEntity.ok(new HashMap<String,String>().put("Authorization",token));
