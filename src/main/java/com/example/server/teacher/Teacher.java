@@ -17,7 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class Teacher {
     @Id
-    private UUID id=UUID.randomUUID();
+    final private UUID id=UUID.randomUUID();
 
     @NotBlank
     @NonNull
