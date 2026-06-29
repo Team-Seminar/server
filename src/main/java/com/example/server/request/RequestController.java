@@ -58,7 +58,7 @@ public class RequestController {
     }
 
     //삭제
-    @DeleteMapping("/Delete")
+    @DeleteMapping("/")
     public Request DeleteRequest(@RequestParam Long id){
         return requestService.requestDelete(id);
     }
