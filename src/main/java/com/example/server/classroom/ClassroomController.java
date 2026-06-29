@@ -1,5 +1,8 @@
 package com.example.server.classroom;
+import com.example.server.DTO.ClassroomCreateDTO;
+import com.example.server.global.ResponseClass;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -8,6 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("api/v1/Classrooms")
 public class ClassroomController {
+    private ResponseClass responseClass;
     final private ClassroomService classroomService;
     @GetMapping("/{id}")
     public Classroom classroomGet(@PathVariable Long id){
@@ -18,9 +22,9 @@ public class ClassroomController {
         return classroomService.classroomGetAll();
     }
 
-    @PostMapping()
-    public Classroom classroomCreate(@RequestParam String name){
-        return classroomService.classroomCreate(name);
+    @PostMapping("/")
+    public Classroom classroomCreate(@RequestBody ClassroomCreateDTO classroomCreateDTO){
+        return classroomService.classroomCreate(classroomCreateDTO.getName());
     }
 
     @DeleteMapping("/{id}")
@@ -29,8 +33,8 @@ public class ClassroomController {
     }
 
     @PatchMapping("/{id}")
-    public String updateStatus(@PathVariable Long id,@RequestParam ClassroomStatus status){
+    public ResponseEntity<?> updateStatus(@PathVariable Long id, @RequestParam ClassroomStatus status){
         classroomService.classroomUpdate(id, status);
-        return "수정이 성공되었습니다";
+        return responseClass.massageReturn("수정이 성공되었습니다");
     }
 }
