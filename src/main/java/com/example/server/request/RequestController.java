@@ -52,7 +52,7 @@ public class RequestController {
 
     //수정
     @PreAuthorize("hasAuthority('teacher')")
-    @PatchMapping("/UpdateStatus")
+    @PatchMapping("/Status")
     public void UpdateStatus(@RequestHeader("Authorization") String token, @RequestParam Long id, @RequestParam requestStatus status){
         requestService.requestUpdate(id, status);
     }
