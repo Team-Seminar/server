@@ -17,7 +17,7 @@ public class ClassroomController {
     public Classroom classroomGet(@PathVariable Long id){
         return classroomService.classroomGet(id);
     }
-    @GetMapping()
+    @GetMapping("/")
     public List<Classroom> classroomGetAll(){
         return classroomService.classroomGetAll();
     }
