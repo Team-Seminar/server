@@ -45,3 +45,8 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+//엉뚱한 파일 생성 예방?
+jar {
+    enabled = false
+}
