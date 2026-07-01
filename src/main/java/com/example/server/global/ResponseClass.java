@@ -41,6 +41,6 @@ public class ResponseClass {
     }
     public ResponseEntity<?> listReturn(List<?> list){
         ListDTO listDTO = new ListDTO(list);
-
+        return ResponseEntity.ok(listDTO);
     }
 }

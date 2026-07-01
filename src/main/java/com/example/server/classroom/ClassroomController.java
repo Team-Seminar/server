@@ -18,8 +18,8 @@ public class ClassroomController {
         return classroomService.classroomGet(id);
     }
     @GetMapping("/")
-    public List<Classroom> classroomGetAll(){
-        return classroomService.classroomGetAll();
+    public ResponseEntity<?> classroomGetAll(){
+        return responseClass.listReturn(classroomService.classroomGetAll());
     }
 
     @PostMapping("/")
