@@ -4,8 +4,8 @@ import com.example.server.DTO.ListDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.support.PagedListHolder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +14,7 @@ import java.util.Map;
 @Getter
 @Setter
 @NoArgsConstructor
+@Component
 public class ResponseClass {
     Map<String,Object> data=new HashMap<>();
     public void addData(String key, Object value){
