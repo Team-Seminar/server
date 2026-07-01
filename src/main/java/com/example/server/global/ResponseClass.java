@@ -1,11 +1,14 @@
 package com.example.server.global;
 
+import com.example.server.DTO.ListDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -35,5 +38,9 @@ public class ResponseClass {
         Map<String,String> data=new HashMap<String,String>();
         data.put("Authorization",token);
         return ResponseEntity.ok(data);
+    }
+    public ResponseEntity<?> listReturn(List<?> list){
+        ListDTO listDTO = new ListDTO(list);
+
     }
 }

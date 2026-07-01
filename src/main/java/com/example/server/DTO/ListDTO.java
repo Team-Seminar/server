@@ -9,4 +9,8 @@ import java.util.List;
 @Setter
 public class ListDTO {
     List<?> data;
+
+    public ListDTO(List<?> list) {
+        this.data=list;
+    }
 }
