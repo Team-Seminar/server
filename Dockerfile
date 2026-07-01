@@ -1,5 +1,5 @@
 # 1단계: 빌드
-FROM gradle:8.15-jdk17 AS build
+FROM gradle:8.14-jdk17 AS build
 COPY --chown=gradle:gradle . /home/app
 WORKDIR /home/app
 RUN gradle build -x test --no-daemon
