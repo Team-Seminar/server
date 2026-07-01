@@ -35,4 +35,9 @@ public class TeacherController {
         }
         return responseClass.massageReturn(teacherService.Join(teacherJoinDTO.getName(),teacherJoinDTO.getPw()));
     }
+
+    @GetMapping()
+    public ResponseEntity<?> AllTeacher(){
+        return responseClass.listReturn(teacherService.AllTeacher());
+    }
 }

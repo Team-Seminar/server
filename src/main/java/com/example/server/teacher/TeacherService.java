@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class TeacherService {
@@ -29,5 +31,9 @@ public class TeacherService {
         Teacher teacher=new Teacher(name, pw);
         teacherRepository.save(teacher);
         return "회원가입 성공";
+    }
+
+    public List<Teacher> AllTeacher(){
+        return teacherRepository.findAll();
     }
 }
