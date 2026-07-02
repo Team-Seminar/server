@@ -1,13 +1,12 @@
 package com.example.server.global.security.error;
 
 import com.example.server.global.ResponseClass;
+import com.example.server.global.security.error.exception.LoginException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import javax.security.auth.login.LoginException;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
