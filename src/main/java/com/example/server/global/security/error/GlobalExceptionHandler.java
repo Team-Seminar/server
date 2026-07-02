@@ -1,0 +1,25 @@
+package com.example.server.global.security.error;
+
+import com.example.server.global.ResponseClass;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import javax.security.auth.login.LoginException;
+
+@RestControllerAdvice
+@RequiredArgsConstructor
+public class GlobalExceptionHandler {
+    final private ResponseClass responseClass;
+    @ExceptionHandler(LoginException.class)
+    public ResponseEntity<?> handleLoginFalse(LoginException e){
+        return responseClass.massageReturn(e.getMessage());
+    }
+    // 프로젝트 어디서든 IllegalArgumentException이 throw되면 이 메서드가 낚아챕니다.
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+}

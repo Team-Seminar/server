@@ -44,4 +44,8 @@ public class ResponseClass {
         ListDTO listDTO = new ListDTO(list);
         return ResponseEntity.ok(listDTO);
     }
+
+    public ResponseEntity<?> errorReturn(int status, String massage){
+        return ResponseEntity.status(status).body(massage);
+    }
 }
