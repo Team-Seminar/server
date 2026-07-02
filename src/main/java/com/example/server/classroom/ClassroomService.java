@@ -22,7 +22,6 @@ public class ClassroomService {
     //생성
     public Classroom classroomCreate(String name){
         Classroom classroom=new Classroom(name);
-        System.out.println(classroom.getName());
         classroomRepository.save(classroom);
         return classroom;
     }

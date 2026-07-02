@@ -14,6 +14,7 @@ public class GlobalExceptionHandler {
     final private ResponseClass responseClass;
     @ExceptionHandler(LoginException.class)
     public ResponseEntity<?> handleLoginFalse(LoginException e){
+        System.out.println("에러 요청이 들어왔습니다!!!!!");
         return responseClass.massageReturn("로그인 실패");
     }
     // 프로젝트 어디서든 IllegalArgumentException이 throw되면 이 메서드가 낚아챕니다.
