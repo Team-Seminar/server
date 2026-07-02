@@ -9,8 +9,9 @@ import java.util.List;
 @Setter
 public class ListDTO {
     List<?> data;
-
+    int count;
     public ListDTO(List<?> list) {
         this.data=list;
+        this.count = list.size();
     }
 }
