@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("api/v1/Classrooms")
 public class ClassroomController {
-    private ResponseClass responseClass;
+    final private ResponseClass responseClass;
     final private ClassroomService classroomService;
     @GetMapping("/{id}")
     public Classroom classroomGet(@PathVariable Long id){
