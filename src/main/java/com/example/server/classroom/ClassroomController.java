@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/Classrooms")
+@RequestMapping("api/v1/classrooms")
 public class ClassroomController {
     final private ResponseClass responseClass;
     final private ClassroomService classroomService;
@@ -17,12 +17,12 @@ public class ClassroomController {
     public Classroom classroomGet(@PathVariable Long id){
         return classroomService.classroomGet(id);
     }
-    @GetMapping("/")
+    @GetMapping()
     public ResponseEntity<?> classroomGetAll(){
         return responseClass.listReturn(classroomService.classroomGetAll());
     }
 
-    @PostMapping("/")
+    @PostMapping()
     public Classroom classroomCreate(@RequestBody ClassroomCreateDTO classroomCreateDTO){
         return classroomService.classroomCreate(classroomCreateDTO.getName());
     }

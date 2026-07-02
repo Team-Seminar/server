@@ -15,12 +15,12 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/Request")
+@RequestMapping("/api/v1/requests")
 public class RequestController {
     final private RequestService requestService;
     final private ClassroomService classroomService;
     //생성
-    @PostMapping("/")
+    @PostMapping()
     public ResponseEntity<?> RequestCreate(@RequestBody RequestCreateDTO requestCreateDTO){
         Long tableId=requestCreateDTO.getTableId();
         String name=requestCreateDTO.getName();
@@ -40,12 +40,12 @@ public class RequestController {
         return responseClass.massageReturn("예약 성공");
     }
     //읽기
-    @GetMapping("/")
-    public Request RequestGet(@RequestParam Long id){
+    @GetMapping("/{id}")
+    public Request RequestGet(@PathVariable Long id){
         return requestService.requestGet(id);
     }
 
-    @GetMapping("/All")
+    @GetMapping()
     public List<Request> RequestGetAll(){
         return requestService.requestGetAll();
     }
@@ -58,7 +58,7 @@ public class RequestController {
     }
 
     //삭제
-    @DeleteMapping("/")
+    @DeleteMapping()
     public Request DeleteRequest(@RequestParam Long id){
         return requestService.requestDelete(id);
     }
