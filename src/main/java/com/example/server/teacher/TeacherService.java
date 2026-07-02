@@ -2,7 +2,7 @@ package com.example.server.teacher;
 
 import com.example.server.global.security.JWT.TeacherToken;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,7 +11,8 @@ import java.util.List;
 @Service
 public class TeacherService {
 
-    @Autowired
+    final private PasswordEncoder passwordEncoder;
+
     final private TeacherRepository teacherRepository;
 
     final private TeacherToken teacherToken;
@@ -20,7 +21,7 @@ public class TeacherService {
         Teacher teacher = teacherRepository.findByName(name)
                 .orElseThrow(() -> new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다."));
 
-        if (!teacher.getPw().equals(pw)) { //pw가 틀렸다면
+        if (!passwordEncoder.matches(pw, teacher.getPw())) { //pw가 틀렸다면
             throw new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다.");
         }
 
@@ -28,7 +29,8 @@ public class TeacherService {
     }
 
     public String Join(String name, String pw){
-        Teacher teacher=new Teacher(name, pw);
+
+        Teacher teacher=new Teacher(name, passwordEncoder.encode(pw));
         teacherRepository.save(teacher);
         return "회원가입 성공";
     }

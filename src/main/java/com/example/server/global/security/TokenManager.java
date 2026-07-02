@@ -19,8 +19,11 @@ import java.util.*;
 public class TokenManager {
     @Value("${jwt.secret-key}")
     private String SECRET_KEY_STRING; //보안 키
+
     private SecretKey SECRET_KEY;
+
     final static private Long VALID_TIME= 30 * 60 * 1000L; //토큰 허용 시간(30분)
+
     @PostConstruct //Value 후 자동 실행
     public void init() {
         SECRET_KEY = Keys.hmacShaKeyFor(SECRET_KEY_STRING.getBytes(StandardCharsets.UTF_8)); //암호화
