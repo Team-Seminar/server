@@ -29,15 +29,15 @@ public class RequestController {
 
         ResponseClass responseClass=new ResponseClass();
         LocalTime nowTime=LocalTime.now();
-        if (nowTime.getHour()<6 || nowTime.getHour()>18){
+        if (nowTime.getHour()>6 && nowTime.getHour()<18){
             return responseClass.massageReturn("예약 가능 시간이 아닙니다");
         }
         Classroom classroom =classroomService.classroomGet(tableId);
         if(classroom.getStatus() != ClassroomStatus.EMPTY){
             return responseClass.massageReturn("예약이 불가합니다");
         }
-        requestService.requestCreate(time, name,  reason, classroom);
-        return responseClass.massageReturn("예약 성공");
+
+        return responseClass.oneResponseReturn("data",requestService.requestCreate(time, name,  reason, classroom));
     }
     //읽기
     @GetMapping("/{id}")
@@ -53,7 +53,7 @@ public class RequestController {
     //수정
     @PreAuthorize("hasAuthority('teacher')")
     @PatchMapping("/Status")
-    public void UpdateStatus(@RequestHeader("Authorization") String token, @RequestParam Long id, @RequestParam requestStatus status){
+    public void UpdateStatus(@RequestParam Long id, @RequestParam requestStatus status){
         requestService.requestUpdate(id, status);
     }
 
