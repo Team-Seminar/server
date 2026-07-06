@@ -1,4 +1,4 @@
-package com.example.server.request;
+package com.example.server.reservation;
 
 import com.example.server.classroom.Classroom;
 import jakarta.persistence.*;
@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class Request {
+public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,7 +25,7 @@ public class Request {
     @NonNull
     @NotBlank
     private String reason;
-    private requestStatus status=requestStatus.READY;
+    private reservationStatus status=reservationStatus.READY;
 
     @NonNull
     @NotNull
@@ -36,7 +36,7 @@ public class Request {
     @NonNull
     private String name; //예약자 명
 
-    public void updateStatus(requestStatus status){
+    public void updateStatus(reservationStatus status){
         this.status=status;
     }
 }
