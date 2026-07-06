@@ -3,7 +3,7 @@
 ```
 git pull origin main --allow-unrelated-histories 
 git remote remove origin
-git remote add origin 저장소주소
+git remote add origin `저장소주소`
 ```
 
 ## 커밋 및 푸시
