@@ -10,7 +10,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Entity
-@Table(name = "Request")
 @Getter
 @NoArgsConstructor
 @RequiredArgsConstructor
