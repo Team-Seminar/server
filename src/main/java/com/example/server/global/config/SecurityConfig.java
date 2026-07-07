@@ -41,7 +41,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         // 요청을 허용할 프론트엔드 주소 (Live Server 주소)
-        configuration.setAllowedOrigins(List.of("http://127.0.0.1:5500"));
+        configuration.setAllowedOrigins(List.of("*"));
 
         // 허용할 HTTP 메서드
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
