@@ -37,8 +37,6 @@ out/
 ### VS Code ###
 .vscode/
 
-#내가 추가
-application.properties
 
 #아래 링크 사이트가 알려준 코드ㅡ
 # Created by https://www.toptal.com/developers/gitignore/api/java,windows,intellij
