@@ -30,12 +30,12 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                         // 2. 핵심: OPTIONS 메서드로 들어오는 모든 요청은 로그인 검사 없이 허용!
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 );
 
         return http.build();
     }
+
 
     // Spring Security용 CORS 상세 설정
     @Bean
