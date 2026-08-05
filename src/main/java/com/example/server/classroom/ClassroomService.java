@@ -1,5 +1,6 @@
 package com.example.server.classroom;
 
+import com.example.server.DTO.ClassroomCreateDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,12 @@ public class ClassroomService {
     }
 
     //생성
-    public Classroom classroomCreate(String name) {
-        Classroom classroom = new Classroom(name);
+    public Classroom classroomCreate(ClassroomCreateDTO classroomCreateDTO) {
+        Classroom classroom = Classroom.builder()
+                .name(classroomCreateDTO.getName())
+                .floor(classroomCreateDTO.getFloor())
+                .status(ClassroomStatus.EMPTY)
+                .build();
         classroomRepository.save(classroom);
         return classroom;
     }

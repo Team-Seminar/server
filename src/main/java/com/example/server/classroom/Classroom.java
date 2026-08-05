@@ -2,26 +2,26 @@ package com.example.server.classroom;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "Classroom")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
-@RequiredArgsConstructor
+@Builder
 public class Classroom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
     @NotBlank
     private String name;
 
+    @Enumerated(EnumType.STRING)
     private ClassroomStatus status = ClassroomStatus.EMPTY;
+
+    private int floor;
     public void UpdateStatus(ClassroomStatus newStatus){
         this.status=newStatus;
     }

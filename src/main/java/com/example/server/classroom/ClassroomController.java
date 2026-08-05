@@ -24,7 +24,7 @@ public class ClassroomController {
 
     @PostMapping()
     public Classroom classroomCreate(@RequestBody ClassroomCreateDTO classroomCreateDTO){
-        return classroomService.classroomCreate(classroomCreateDTO.getName());
+        return classroomService.classroomCreate(classroomCreateDTO);
     }
 
     @DeleteMapping("/{id}")
