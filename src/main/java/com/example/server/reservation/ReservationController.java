@@ -51,7 +51,7 @@ public class ReservationController {
     }
 
     //수정
-    @PreAuthorize("hasAuthority('teacher')")
+    @PreAuthorize("hasAuthority('TEACHER')")
     @PatchMapping("/Status")
     public void UpdateStatus(@RequestParam Long id, @RequestParam reservationStatus status){
         reservationService.reservationUpdate(id, status);

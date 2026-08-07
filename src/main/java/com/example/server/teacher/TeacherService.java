@@ -26,7 +26,7 @@ public class TeacherService {
             throw new LoginException();
         }
 
-        return teacherToken.create(teacher.getId(),"teacher");
+        return teacherToken.create(teacher.getId(),"ROLE_TEACHER");
     }
 
     public String Join(String name, String pw){
