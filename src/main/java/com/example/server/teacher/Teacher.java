@@ -1,5 +1,6 @@
 package com.example.server.teacher;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -19,11 +20,10 @@ public class Teacher {
     @Id
     final private UUID id=UUID.randomUUID();
 
-    @NotBlank
-    @NonNull
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String name;
-    @NotBlank
-    @NonNull
+
+    @Column(nullable = false)
+    @JsonIgnore
     private String pw;
 }

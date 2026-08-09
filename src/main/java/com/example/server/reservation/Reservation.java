@@ -4,10 +4,7 @@ import com.example.server.classroom.Classroom;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
@@ -18,22 +15,19 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
-    @NotNull
+    @Column(nullable = false)
     private int time;
 
-    @NonNull
-    @NotBlank
+    @Column(nullable = false)
     private String reason;
+
+    @Column(nullable = false)
     private reservationStatus status=reservationStatus.READY;
 
-    @NonNull
-    @NotNull
     @ManyToOne
     private Classroom classroom;
 
-    @NotBlank
-    @NonNull
+    @Column(nullable = false)
     private String name; //예약자 명
 
     public void updateStatus(reservationStatus status){
