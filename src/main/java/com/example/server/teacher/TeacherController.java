@@ -1,18 +1,15 @@
 package com.example.server.teacher;
 
 import com.example.server.DTO.ResponseDTO;
-import com.example.server.DTO.TokensDTO;
-import com.example.server.global.ResponseClass;
 import com.example.server.DTO.TeacherJoinDTO;
 import com.example.server.DTO.TeacherLoginDTO;
-import com.example.server.global.security.error.exception.LoginException;
+import com.example.server.global.security.error.exception.CustomException;
+import com.example.server.global.security.error.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
 import java.util.Objects;
 
 @RequestMapping("api/v1/teachers")
@@ -34,9 +31,8 @@ public class TeacherController {
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseDTO Join(@RequestBody TeacherJoinDTO teacherJoinDTO){
-        ResponseClass responseClass=new ResponseClass();
         if (!Objects.equals(teacherJoinDTO.getTeacherPw(), TEACHER_KEY)){
-            throw new LoginException();
+            throw new CustomException(ErrorCode.NOT_ABLE_STUDENT);
         }
         return ResponseDTO.success(teacherService.Join(teacherJoinDTO.getName(),teacherJoinDTO.getPw()));
     }

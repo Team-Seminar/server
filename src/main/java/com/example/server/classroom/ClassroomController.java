@@ -1,10 +1,8 @@
 package com.example.server.classroom;
 import com.example.server.DTO.ClassroomCreateDTO;
 import com.example.server.DTO.ResponseDTO;
-import com.example.server.global.ResponseClass;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

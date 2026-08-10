@@ -1,6 +1,8 @@
 package com.example.server.classroom;
 
 import com.example.server.DTO.ClassroomCreateDTO;
+import com.example.server.global.security.error.exception.CustomException;
+import com.example.server.global.security.error.exception.ErrorCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,9 @@ public class ClassroomService {
 
     //읽기
     public Classroom classroomGet(Long classId) {
-        return classroomRepository.findById(classId).orElseThrow();
+        return classroomRepository
+                .findById(classId)
+                .orElseThrow(()->new CustomException(ErrorCode.CLASS_NOT_FOUND));
     }
 
     public List<Classroom> classroomGetAll() {
@@ -35,7 +39,9 @@ public class ClassroomService {
 
     //삭제
     public void classroomDelete(Long classId) {
-        Classroom classroom = classroomRepository.findById(classId).orElseThrow();
+        Classroom classroom = classroomRepository
+                .findById(classId)
+                .orElseThrow(()->new CustomException(ErrorCode.CLASS_NOT_FOUND));
         classroomRepository.removeById(classId);
     }
 
@@ -43,7 +49,7 @@ public class ClassroomService {
     @Transactional
     public void classroomUpdate(Long classId, ClassroomStatus status) {
         classroomRepository.findById(classId)
-                .orElseThrow()
+                .orElseThrow(()->new CustomException(ErrorCode.CLASS_NOT_FOUND))
                 .UpdateStatus(status);
     }
 }

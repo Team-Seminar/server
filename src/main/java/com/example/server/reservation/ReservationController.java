@@ -5,15 +5,12 @@ import com.example.server.DTO.ResponseDTO;
 import com.example.server.classroom.Classroom;
 import com.example.server.classroom.ClassroomService;
 import com.example.server.classroom.ClassroomStatus;
-import com.example.server.global.ResponseClass;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalTime;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,7 +26,6 @@ public class ReservationController {
         String reason=reservationCreateDTO.getReason();
         int time=reservationCreateDTO.getTime();
 
-        ResponseClass responseClass=new ResponseClass();
         LocalTime nowTime=LocalTime.now();
         if (nowTime.getHour()>6 && nowTime.getHour()<18){
             //에러 투척
