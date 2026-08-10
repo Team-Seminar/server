@@ -27,16 +27,20 @@ public class ReservationService {
     }
     //생성
     public Long reservationCreate(int time, String name, String reason, Classroom classroom){
-        Reservation reservation = new Reservation(time, reason, classroom, name);
+        Reservation reservation = Reservation.builder()
+                .time(time)
+                .reason(reason)
+                .classroom(classroom)
+                .name(name)
+                .build();
         reservationRepository.save(reservation);
         return reservation.getId();
     }
 
     //삭제
-    public Reservation reservationDelete(Long id){
+    public void reservationDelete(Long id){
         Reservation reservation = reservationRepository.findById(id).orElseThrow();
         reservationRepository.deleteById(id);
-        return reservation;
     }
 
     //업데이트

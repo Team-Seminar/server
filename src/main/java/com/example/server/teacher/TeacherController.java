@@ -1,13 +1,18 @@
 package com.example.server.teacher;
 
+import com.example.server.DTO.ResponseDTO;
+import com.example.server.DTO.TokensDTO;
 import com.example.server.global.ResponseClass;
 import com.example.server.DTO.TeacherJoinDTO;
 import com.example.server.DTO.TeacherLoginDTO;
+import com.example.server.global.security.error.exception.LoginException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Objects;
 
 @RequestMapping("api/v1/teachers")
@@ -18,25 +23,26 @@ public class TeacherController {
 
     @Value("${teacher-key}")
     private String TEACHER_KEY;
-    ResponseClass responseClass=new ResponseClass();
 
     @PostMapping("/login")
-    public ResponseEntity<?> Login(@RequestBody TeacherLoginDTO teacherLoginDTO){
-        return responseClass.tokenReturn(teacherService.login(teacherLoginDTO.getName(),teacherLoginDTO.getPw()));
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseDTO Login(@RequestBody TeacherLoginDTO teacherLoginDTO){
+        return ResponseDTO.success(teacherService.login(teacherLoginDTO.getName(),teacherLoginDTO.getPw()));
     }
 
 
     @PostMapping()
-    public ResponseEntity<?> Join(@RequestBody TeacherJoinDTO teacherJoinDTO){
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseDTO Join(@RequestBody TeacherJoinDTO teacherJoinDTO){
         ResponseClass responseClass=new ResponseClass();
         if (!Objects.equals(teacherJoinDTO.getTeacherPw(), TEACHER_KEY)){
-            return responseClass.massageReturn("선생님이 아닙니다.");
+            throw new LoginException();
         }
-        return responseClass.massageReturn(teacherService.Join(teacherJoinDTO.getName(),teacherJoinDTO.getPw()));
+        return ResponseDTO.success(teacherService.Join(teacherJoinDTO.getName(),teacherJoinDTO.getPw()));
     }
 
     @GetMapping()
-    public ResponseEntity<?> AllTeacher(){
-        return responseClass.listReturn(teacherService.AllTeacher());
+    public ResponseDTO AllTeacher(){
+        return ResponseDTO.success(teacherService.AllTeacher());
     }
 }

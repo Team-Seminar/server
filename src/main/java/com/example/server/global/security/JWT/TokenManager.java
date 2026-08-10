@@ -1,10 +1,10 @@
-package com.example.server.global.security;
+package com.example.server.global.security.JWT;
 
+import com.example.server.DTO.TokensDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -17,20 +17,23 @@ import java.util.*;
 
 @Component
 public class TokenManager {
-    @Value("${jwt.secret-key}")
-    private String SECRET_KEY_STRING; //보안 키
-
-    private SecretKey SECRET_KEY;
+    private final SecretKey SECRET_KEY;
 
     final static private Long VALID_TIME= 30 * 60 * 1000L; //토큰 허용 시간(30분)
+    final static private Long REFRESH_VALID_TIME= 14*24*60 * 60 * 1000L; //토큰 허용 시간(30분)
 
-    @PostConstruct //Value 후 자동 실행
-    public void init() {
-        SECRET_KEY = Keys.hmacShaKeyFor(SECRET_KEY_STRING.getBytes(StandardCharsets.UTF_8)); //암호화
+    public TokenManager(TokenProperty tokenProperty){
+
+        final String SECRET_KEY_STRING = tokenProperty.secretKey(); //보안 키
+        if (SECRET_KEY_STRING == null) {
+            throw new IllegalStateException("JWT Secret Key가 null입니다. application.yml 설정을 확인하세요.");
+        }
+        this.SECRET_KEY=Keys.hmacShaKeyFor(SECRET_KEY_STRING.getBytes(StandardCharsets.UTF_8));
     }
-    public String createToken(String id, Map<String, Object> tokenContent){
+
+    public String generateToken(String id, Long exp , Map<String, Object> tokenContent){
         Date now = new Date();
-        Date expirationTime = new Date(now.getTime()+VALID_TIME);
+        Date expirationTime = new Date(now.getTime()+exp);
         if (id==null || id.isEmpty()){
             id= UUID.randomUUID().toString();
         }
@@ -39,10 +42,31 @@ public class TokenManager {
                 .issuedAt(now)
                 .expiration(expirationTime)
                 .claims(tokenContent)
-                .signWith(SECRET_KEY)
+                .signWith(this.SECRET_KEY)
                 .compact();
-
     }
+    public String generateToken(String id, Long exp){
+        return generateToken(id, exp, new HashMap<>());
+    }
+
+    public String refreshTokenCreate(String id){
+        return generateToken(id, REFRESH_VALID_TIME);
+    }
+    public String accessTokenCreate(String id, Map<String, Object> tokenContent){
+        return generateToken(id, VALID_TIME, tokenContent);
+    }
+
+    public TokensDTO createToken(String id, Map<String, Object> tokenContent){
+        return TokensDTO.builder()
+                .accessToken(accessTokenCreate(id, tokenContent))
+                .refreshToken(refreshTokenCreate(id))
+                .build();
+    }
+    public TokensDTO createToken(String id, String role){
+        Map<String, Object> tokenContent=Map.of("role", role);
+        return createToken(id, tokenContent);
+    }
+
     public Claims getToken(String token){
         try {
             // Bearer 접두사 제거

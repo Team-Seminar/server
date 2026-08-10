@@ -19,6 +19,7 @@ public class Classroom {
     private String name;
 
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     private ClassroomStatus status = ClassroomStatus.EMPTY;
 
     private int floor;

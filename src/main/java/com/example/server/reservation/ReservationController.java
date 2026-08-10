@@ -1,11 +1,13 @@
 package com.example.server.reservation;
 
 import com.example.server.DTO.ReservationCreateDTO;
+import com.example.server.DTO.ResponseDTO;
 import com.example.server.classroom.Classroom;
 import com.example.server.classroom.ClassroomService;
 import com.example.server.classroom.ClassroomStatus;
 import com.example.server.global.ResponseClass;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +23,7 @@ public class ReservationController {
     final private ClassroomService classroomService;
     //생성
     @PostMapping()
-    public ResponseEntity<?> RequestCreate(@RequestBody ReservationCreateDTO reservationCreateDTO){
+    public ResponseDTO RequestCreate(@RequestBody ReservationCreateDTO reservationCreateDTO){
         Long tableId=reservationCreateDTO.getTableId();
         String name=reservationCreateDTO.getName();
         String reason=reservationCreateDTO.getReason();
@@ -30,36 +32,40 @@ public class ReservationController {
         ResponseClass responseClass=new ResponseClass();
         LocalTime nowTime=LocalTime.now();
         if (nowTime.getHour()>6 && nowTime.getHour()<18){
-            return responseClass.massageReturn("예약 가능 시간이 아닙니다");
+            //에러 투척
+            //return responseClass.massageReturn("예약 가능 시간이 아닙니다");
         }
         Classroom classroom =classroomService.classroomGet(tableId);
         if(classroom.getStatus() != ClassroomStatus.EMPTY){
-            return responseClass.massageReturn("예약이 불가합니다");
+            //에러 투척
+            //return responseClass.massageReturn("예약이 불가합니다");
         }
 
-        return responseClass.oneResponseReturn("data", reservationService.reservationCreate(time, name,  reason, classroom));
+        return ResponseDTO.success(reservationService.reservationCreate(time, name,  reason, classroom));
     }
     //읽기
     @GetMapping("/{id}")
-    public Reservation RequestGet(@PathVariable Long id){
-        return reservationService.reservationGet(id);
+    public ResponseDTO RequestGet(@PathVariable Long id){
+        return ResponseDTO.success(reservationService.reservationGet(id));
     }
 
     @GetMapping()
-    public List<Reservation> RequestGetAll(){
-        return reservationService.reservationGetAll();
+    public ResponseDTO RequestGetAll(){
+        return ResponseDTO.success(reservationService.reservationGetAll());
     }
 
     //수정
     @PreAuthorize("hasAuthority('TEACHER')")
     @PatchMapping("/Status")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void UpdateStatus(@RequestParam Long id, @RequestParam reservationStatus status){
         reservationService.reservationUpdate(id, status);
     }
 
     //삭제
     @DeleteMapping()
-    public Reservation DeleteRequest(@RequestParam Long id){
-        return reservationService.reservationDelete(id);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void DeleteRequest(@RequestParam Long id){
+        reservationService.reservationDelete(id);
     }
 }

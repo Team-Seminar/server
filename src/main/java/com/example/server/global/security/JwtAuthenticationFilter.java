@@ -1,5 +1,6 @@
 package com.example.server.global.security;
 
+import com.example.server.global.security.JWT.TokenManager;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

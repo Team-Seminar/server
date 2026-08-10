@@ -1,6 +1,7 @@
 package com.example.server.global;
 
 import com.example.server.DTO.ListDTO;
+import com.example.server.DTO.TokensDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,11 +34,6 @@ public class ResponseClass {
     public ResponseEntity<?> massageReturn(String massage){
         Map<String,String> data=new HashMap<String,String>();
         data.put("massage",massage);
-        return ResponseEntity.ok(data);
-    }
-    public ResponseEntity<?> tokenReturn(String token){
-        Map<String,String> data=new HashMap<String,String>();
-        data.put("Authorization",token);
         return ResponseEntity.ok(data);
     }
     public ResponseEntity<?> listReturn(List<?> list){

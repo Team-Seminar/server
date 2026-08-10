@@ -34,10 +34,9 @@ public class ClassroomService {
     }
 
     //삭제
-    public Classroom classroomDelete(Long classId) {
+    public void classroomDelete(Long classId) {
         Classroom classroom = classroomRepository.findById(classId).orElseThrow();
         classroomRepository.removeById(classId);
-        return classroom;
     }
 
     //수정
