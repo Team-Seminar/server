@@ -23,6 +23,7 @@ public class Reservation {
     private String reason;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private reservationStatus status=reservationStatus.READY;
 
     @ManyToOne
