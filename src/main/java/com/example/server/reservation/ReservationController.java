@@ -5,6 +5,8 @@ import com.example.server.DTO.ResponseDTO;
 import com.example.server.classroom.Classroom;
 import com.example.server.classroom.ClassroomService;
 import com.example.server.classroom.ClassroomStatus;
+import com.example.server.global.security.error.exception.CustomException;
+import com.example.server.global.security.error.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,13 +30,11 @@ public class ReservationController {
 
         LocalTime nowTime=LocalTime.now();
         if (nowTime.getHour()>6 && nowTime.getHour()<18){
-            //에러 투척
-            //return responseClass.massageReturn("예약 가능 시간이 아닙니다");
+            throw new CustomException(ErrorCode.IS_TIME_NOT);
         }
         Classroom classroom =classroomService.classroomGet(tableId);
         if(classroom.getStatus() != ClassroomStatus.EMPTY){
-            //에러 투척
-            //return responseClass.massageReturn("예약이 불가합니다");
+            throw new CustomException(ErrorCode.NOT_ABLE_RESERVATION);
         }
 
         return ResponseDTO.success(reservationService.reservationCreate(time, name,  reason, classroom));

@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
     CLASS_NOT_FOUND("해당 교실 없음", HttpStatus.NOT_FOUND),
 
+    IS_TIME_NOT("예약 가능 시간이 아님", HttpStatus.CONFLICT),
+    NOT_ABLE_RESERVATION("예약 불가", HttpStatus.CONFLICT),
     RESERVATION_NOT_FOUND("해당 예약 없음", HttpStatus.NOT_FOUND),
 
     TEACHER_NOT_FOUND("해당 계정 없음", HttpStatus.NOT_FOUND),
