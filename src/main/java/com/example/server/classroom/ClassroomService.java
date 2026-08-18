@@ -3,15 +3,15 @@ package com.example.server.classroom;
 import com.example.server.DTO.ClassroomCreateDTO;
 import com.example.server.global.security.error.exception.CustomException;
 import com.example.server.global.security.error.exception.ErrorCode;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true, rollbackFor = CustomException.class, timeout = 60) //1분 이상 소요시 자동 롤백
 public class ClassroomService {
     final private ClassroomRepository classroomRepository;
 
@@ -27,6 +27,7 @@ public class ClassroomService {
     }
 
     //생성
+    @Transactional
     public Classroom classroomCreate(ClassroomCreateDTO classroomCreateDTO) {
         Classroom classroom = Classroom.builder()
                 .name(classroomCreateDTO.getName())
@@ -38,6 +39,7 @@ public class ClassroomService {
     }
 
     //삭제
+    @Transactional
     public void classroomDelete(Long classId) {
         Classroom classroom = classroomRepository
                 .findById(classId)

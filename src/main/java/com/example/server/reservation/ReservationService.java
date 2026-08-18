@@ -5,14 +5,15 @@ import com.example.server.classroom.ClassroomService;
 import com.example.server.classroom.ClassroomStatus;
 import com.example.server.global.security.error.exception.CustomException;
 import com.example.server.global.security.error.exception.ErrorCode;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
+@Transactional(readOnly = true, rollbackFor = CustomException.class, timeout = 60) //1분 이상 소요시 자동 롤백
 public class ReservationService {
     final private ReservationRepository reservationRepository;
     final private ClassroomService classroomService;
@@ -28,6 +29,7 @@ public class ReservationService {
         return reservationRepository.findAllByClassroom(classroom);
     }
     //생성
+    @Transactional
     public Long reservationCreate(int time, String name, String reason, Classroom classroom){
         Reservation reservation = Reservation.builder()
                 .time(time)
@@ -40,6 +42,7 @@ public class ReservationService {
     }
 
     //삭제
+    @Transactional
     public void reservationDelete(Long id){
         reservationRepository.deleteById(id);
     }
