@@ -22,6 +22,7 @@ public class ReservationController {
     final private ClassroomService classroomService;
     //생성
     @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseDTO RequestCreate(@RequestBody ReservationCreateDTO reservationCreateDTO){
         Long tableId=reservationCreateDTO.getTableId();
         String name=reservationCreateDTO.getName();
