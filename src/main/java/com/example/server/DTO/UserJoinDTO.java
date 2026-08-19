@@ -7,5 +7,4 @@ public class UserJoinDTO {
     String name;
     String pw;
     String checkPw;
-    String teacherPw="";
 }

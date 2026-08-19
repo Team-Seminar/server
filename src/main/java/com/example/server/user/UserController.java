@@ -1,6 +1,7 @@
 package com.example.server.user;
 
 import com.example.server.DTO.ResponseDTO;
+import com.example.server.DTO.TeacherJoinDTO;
 import com.example.server.DTO.UserJoinDTO;
 import com.example.server.DTO.UserLoginDTO;
 import lombok.RequiredArgsConstructor;
@@ -15,15 +16,21 @@ public class UserController {
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseDTO Login(@RequestBody UserLoginDTO userLoginDTO){
+    public ResponseDTO login(@RequestBody UserLoginDTO userLoginDTO){
         return ResponseDTO.success(UserService.login(userLoginDTO));
     }
 
 
-    @PostMapping()
+    @PostMapping("/join/student")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseDTO Join(@RequestBody UserJoinDTO userJoinDTO){
+    public ResponseDTO studentJoin(@RequestBody UserJoinDTO userJoinDTO){
         return ResponseDTO.success(UserService.join(userJoinDTO));
+    }
+
+    @PostMapping("/join/teacher")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseDTO teacherJoin(@RequestBody TeacherJoinDTO teacherJoinDTO){
+        return ResponseDTO.success(UserService.teacherJoin(teacherJoinDTO));
     }
 
     @GetMapping()

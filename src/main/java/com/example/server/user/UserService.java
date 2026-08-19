@@ -1,5 +1,6 @@
 package com.example.server.user;
 
+import com.example.server.DTO.TeacherJoinDTO;
 import com.example.server.DTO.TokensDTO;
 import com.example.server.DTO.UserJoinDTO;
 import com.example.server.DTO.UserLoginDTO;
@@ -38,23 +39,36 @@ public class UserService {
         return tokenManager.createToken(user.getId().toString(), "ROLE_STUDENT");
     }
 
+
     @Transactional
-    public String join(UserJoinDTO joinDTO){
-        UserRole role=UserRole.STUDENT;
-        if(joinDTO.getTeacherPw().equals(userProperties.getTeacherPw())){
-            role=UserRole.TEACHER;
-        }
-        if (joinDTO.getPw().equals(joinDTO.getCheckPw())){
+    void saveUser(String name, String pw, String checkPw, UserRole role){
+        if (pw.equals(checkPw)){
             throw new CustomException(ErrorCode.NOT_EQUALS_PASSWORD);
         }
-        User user= User.builder()
-                .name(joinDTO.getName())
-                .pw(passwordEncoder.encode(joinDTO.getPw()))
-                .role(role)
-                .build();
-        userRepository.save(user);
+        userRepository.save(
+                User.builder()
+                        .name(name)
+                        .pw(pw)
+                        .role(role)
+                        .build()
+        );
+    }
+
+    @Transactional
+    public String join(UserJoinDTO joinDTO){
+        saveUser(joinDTO.getName(), joinDTO.getPw(), joinDTO.getCheckPw(), UserRole.STUDENT);
         return "회원가입 성공";
     }
+
+    @Transactional
+    public String teacherJoin(TeacherJoinDTO joinDTO){
+        if (joinDTO.teacherPw().equals(userProperties.getTeacherPw())){
+            throw new CustomException(ErrorCode.NOT_ABLE_STUDENT);
+        }
+        saveUser(joinDTO.name(), joinDTO.pw(), joinDTO.checkPw(), UserRole.TEACHER);
+        return "회원가입 성공";
+    }
+
 
     public List<User> AllUser(){
         return userRepository.findAll();
