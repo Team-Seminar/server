@@ -57,7 +57,7 @@ public class UserService {
     @Transactional
     public String join(UserJoinDTO joinDTO){
         saveUser(joinDTO.getName(), joinDTO.getPw(), joinDTO.getCheckPw(), UserRole.STUDENT);
-        return "회원가입 성공";
+        return "학생의 회원가입이 성공하였습니다";
     }
 
     @Transactional
@@ -66,7 +66,7 @@ public class UserService {
             throw new CustomException(ErrorCode.NOT_ABLE_STUDENT);
         }
         saveUser(joinDTO.name(), joinDTO.pw(), joinDTO.checkPw(), UserRole.TEACHER);
-        return "회원가입 성공";
+        return "선생님의 회원가입이 성공하였습니다.";
     }
 
 
