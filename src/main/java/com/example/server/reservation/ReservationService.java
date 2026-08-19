@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @RequiredArgsConstructor
 @Service
@@ -30,15 +31,18 @@ public class ReservationService {
     }
     //생성
     @Transactional
-    public Long reservationCreate(int time, String name, String reason, Classroom classroom){
+    public String reservationCreate(int time, String name, String reason, Classroom classroom){
+        int num = ThreadLocalRandom.current().nextInt(0, 10000);
+        String randomCode = String.format("%04d", num);
         Reservation reservation = Reservation.builder()
                 .time(time)
                 .reason(reason)
                 .classroom(classroom)
                 .name(name)
+                .password(randomCode)
                 .build();
         reservationRepository.save(reservation);
-        return reservation.getId();
+        return randomCode;
     }
 
     //삭제

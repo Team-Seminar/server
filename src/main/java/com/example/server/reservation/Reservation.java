@@ -1,6 +1,7 @@
 package com.example.server.reservation;
 
 import com.example.server.classroom.Classroom;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -31,6 +32,10 @@ public class Reservation {
 
     @Column(nullable = false)
     private String name; //예약자 명
+
+    @Column(nullable = false)
+    @JsonIgnore
+    private String password;
 
     public void updateStatus(reservationStatus status){
         this.status=status;
