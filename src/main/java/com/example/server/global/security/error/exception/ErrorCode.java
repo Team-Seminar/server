@@ -15,6 +15,7 @@ public enum ErrorCode {
 
     TEACHER_NOT_FOUND("해당 계정 없음", HttpStatus.NOT_FOUND),
     NOT_ALLOW_LOGIN("아이디 또는 비밀번호가 틀림",HttpStatus.UNAUTHORIZED),
+    NOT_EQUALS_PASSWORD("비밀번호 불일치",HttpStatus.BAD_REQUEST),
 
     NOT_ABLE_STUDENT("학생 사용 불가 요청", HttpStatus.FORBIDDEN);
 

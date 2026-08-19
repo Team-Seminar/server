@@ -1,10 +1,10 @@
-package com.example.server.teacher;
+package com.example.server.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.Table;
 import lombok.*;
 
 import java.util.UUID;
@@ -14,7 +14,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Teacher {
+@Table(name = "member")
+public class User {
     @Id
     @Builder.Default
     final private UUID id=UUID.randomUUID();
@@ -25,4 +26,7 @@ public class Teacher {
     @Column(nullable = false)
     @JsonIgnore
     private String pw;
+
+    @Column(nullable = false)
+    private UserRole role;
 }
