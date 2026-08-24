@@ -42,7 +42,7 @@ public class UserService {
 
     @Transactional
     void saveUser(String name, String pw, String checkPw, UserRole role){
-        if (pw.equals(checkPw)){
+        if (!pw.equals(checkPw)){
             throw new CustomException(ErrorCode.NOT_EQUALS_PASSWORD);
         }
         userRepository.save(
