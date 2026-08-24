@@ -45,6 +45,9 @@ public class UserService {
         if (!pw.equals(checkPw)){
             throw new CustomException(ErrorCode.NOT_EQUALS_PASSWORD);
         }
+        if (userRepository.existsByName(name)){
+            throw new CustomException(ErrorCode.IS_USE_NAME);
+        }
         userRepository.save(
                 User.builder()
                         .name(name)

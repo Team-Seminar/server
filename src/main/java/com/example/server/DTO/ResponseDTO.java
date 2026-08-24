@@ -25,7 +25,7 @@ public record ResponseDTO(
     public static ResponseEntity<ResponseDTO> error(String message, HttpStatus status){
         Map<String, ?> data=Map.of("message", message, "status", status);
         ResponseDTO resBody= ResponseDTO.builder()
-                .success(true)
+                .success(false)
                 .data(data)
                 .build();
         return ResponseEntity.status(status).body(resBody);
