@@ -48,7 +48,7 @@ public class UserService {
         userRepository.save(
                 User.builder()
                         .name(name)
-                        .pw(pw)
+                        .pw(passwordEncoder.encode(pw))
                         .role(role)
                         .build()
         );
