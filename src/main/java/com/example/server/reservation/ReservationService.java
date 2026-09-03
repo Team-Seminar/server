@@ -4,7 +4,6 @@ import com.example.server.DTO.ReservationCreateDTO;
 import com.example.server.classroom.Classroom;
 import com.example.server.classroom.ClassroomRepository;
 import com.example.server.classroom.ClassroomService;
-import com.example.server.classroom.ClassroomStatus;
 import com.example.server.global.security.error.exception.CustomException;
 import com.example.server.global.security.error.exception.ErrorCode;
 import com.example.server.user.UserRepository;
@@ -69,11 +68,8 @@ public class ReservationService {
         Reservation reservation = reservationRepository
                 .findById(id)
                 .orElseThrow(()->new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
-        if (status== ReservationStatus.ALLOW) {
-            for (Reservation temp : reservationGet(reservation.getClassroom())) {
-                temp.updateStatus(ReservationStatus.REFUSE);
-            }
-            classroomService.classroomUpdate(reservation.getClassroom().getId(), ClassroomStatus.ONE);
+        if (status == ReservationStatus.ALLOW) {
+            reservationRepository.updateRefuse(reservation.startAt, reservation.endAt);
         }
         reservation.updateStatus(status);
     }

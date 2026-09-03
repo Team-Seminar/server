@@ -4,7 +4,6 @@ import com.example.server.DTO.ReservationCreateDTO;
 import com.example.server.DTO.ResponseDTO;
 import com.example.server.classroom.Classroom;
 import com.example.server.classroom.ClassroomService;
-import com.example.server.classroom.ClassroomStatus;
 import com.example.server.global.security.error.exception.CustomException;
 import com.example.server.global.security.error.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
