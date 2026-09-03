@@ -21,16 +21,4 @@ public class ClassroomController {
         return ResponseDTO.success(classroomService.classroomGetAll());
     }
 
-    @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseDTO classroomCreate(@RequestBody ClassroomCreateDTO classroomCreateDTO){
-        return ResponseDTO.success(classroomService.classroomCreate(classroomCreateDTO));
-    }
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void classroomDelete(@PathVariable Long id){
-        classroomService.classroomDelete(id);
-    }
-
 }

@@ -26,26 +26,4 @@ public class ClassroomService {
         return classroomRepository.findAll();
     }
 
-    //생성
-    @Transactional
-    public Classroom classroomCreate(
-            ClassroomCreateDTO classroomCreateDTO
-    ) {
-        Classroom classroom = Classroom.builder()
-                .name(classroomCreateDTO.getName())
-                .floor(classroomCreateDTO.getFloor())
-                .build();
-        classroomRepository.save(classroom);
-        return classroom;
-    }
-
-    //삭제
-    @Transactional
-    public void classroomDelete(Long classId) {
-        Classroom classroom = classroomRepository
-                .findById(classId)
-                .orElseThrow(()->new CustomException(ErrorCode.CLASS_NOT_FOUND));
-        classroomRepository.removeById(classId);
-    }
-
 }
