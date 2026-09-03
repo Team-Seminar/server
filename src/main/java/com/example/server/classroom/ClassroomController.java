@@ -33,9 +33,4 @@ public class ClassroomController {
         classroomService.classroomDelete(id);
     }
 
-    @PatchMapping("/{id}")
-    public ResponseDTO updateStatus(@PathVariable Long id, @RequestParam ClassroomStatus status){
-        classroomService.classroomUpdate(id, status);
-        return ResponseDTO.success("수정 성공");
-    }
 }

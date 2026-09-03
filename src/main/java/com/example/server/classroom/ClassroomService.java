@@ -34,7 +34,6 @@ public class ClassroomService {
         Classroom classroom = Classroom.builder()
                 .name(classroomCreateDTO.getName())
                 .floor(classroomCreateDTO.getFloor())
-                .status(ClassroomStatus.EMPTY)
                 .build();
         classroomRepository.save(classroom);
         return classroom;
@@ -49,11 +48,4 @@ public class ClassroomService {
         classroomRepository.removeById(classId);
     }
 
-    //수정
-    @Transactional
-    public void classroomUpdate(Long classId, ClassroomStatus status) {
-        classroomRepository.findById(classId)
-                .orElseThrow(()->new CustomException(ErrorCode.CLASS_NOT_FOUND))
-                .UpdateStatus(status);
-    }
 }

@@ -17,12 +17,5 @@ public class Classroom {
     @Column(nullable = false)
     private String name;
 
-    @Enumerated(EnumType.STRING)
-    @Builder.Default
-    private ClassroomStatus status = ClassroomStatus.EMPTY;
-
     private int floor;
-    public void UpdateStatus(ClassroomStatus newStatus){
-        this.status=newStatus;
-    }
 }
