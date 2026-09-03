@@ -28,7 +28,9 @@ public class ClassroomService {
 
     //생성
     @Transactional
-    public Classroom classroomCreate(ClassroomCreateDTO classroomCreateDTO) {
+    public Classroom classroomCreate(
+            ClassroomCreateDTO classroomCreateDTO
+    ) {
         Classroom classroom = Classroom.builder()
                 .name(classroomCreateDTO.getName())
                 .floor(classroomCreateDTO.getFloor())

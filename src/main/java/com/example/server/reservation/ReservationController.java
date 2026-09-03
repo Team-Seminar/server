@@ -23,22 +23,16 @@ public class ReservationController {
     //생성
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseDTO RequestCreate(@RequestBody ReservationCreateDTO reservationCreateDTO){
-        Long tableId=reservationCreateDTO.getTableId();
-        String name=reservationCreateDTO.getName();
-        String reason=reservationCreateDTO.getReason();
-        int time=reservationCreateDTO.getTime();
+    public ResponseDTO RequestCreate(
+            @RequestBody ReservationCreateDTO reservationCreateDTO
+    ){
 
         LocalTime nowTime=LocalTime.now();
         if (nowTime.getHour()>6 && nowTime.getHour()<18){
             throw new CustomException(ErrorCode.IS_TIME_NOT);
         }
-        Classroom classroom =classroomService.classroomGet(tableId);
-        if(classroom.getStatus() != ClassroomStatus.EMPTY){
-            throw new CustomException(ErrorCode.NOT_ABLE_RESERVATION);
-        }
 
-        return ResponseDTO.success(reservationService.reservationCreate(time, name,  reason, classroom));
+        return ResponseDTO.success(reservationService.reservationCreate(reservationCreateDTO));
     }
     //읽기
     @GetMapping("/{id}")
@@ -55,7 +49,7 @@ public class ReservationController {
     @PreAuthorize("hasAuthority('TEACHER')")
     @PatchMapping("/Status")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void UpdateStatus(@RequestParam Long id, @RequestParam reservationStatus status){
+    public void UpdateStatus(@RequestParam Long id, @RequestParam ReservationStatus status){
         reservationService.reservationUpdate(id, status);
     }
 

@@ -1,11 +1,12 @@
 package com.example.server.reservation;
 
 import com.example.server.classroom.Classroom;
+import com.example.server.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,27 +18,30 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     @Column(nullable = false)
-    private int time;
+    int startAt;
+    @Column(nullable = false)
+    int endAt;
 
     @Column(nullable = false)
     private String reason;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private reservationStatus status=reservationStatus.READY;
+    private ReservationStatus status= ReservationStatus.READY;
 
     @ManyToOne
     private Classroom classroom;
 
     @Column(nullable = false)
-    private String name; //예약자 명
+    private List<User> groups;
 
     @Column(nullable = false)
     @JsonIgnore
     private String password;
 
-    public void updateStatus(reservationStatus status){
+    public void updateStatus(ReservationStatus status){
         this.status=status;
     }
 }

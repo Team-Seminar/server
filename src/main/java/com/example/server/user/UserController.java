@@ -33,8 +33,4 @@ public class UserController {
         return ResponseDTO.success(UserService.teacherJoin(teacherJoinDTO));
     }
 
-    @GetMapping()
-    public ResponseDTO AllTeacher(){
-        return ResponseDTO.success(UserService.AllUser());
-    }
 }

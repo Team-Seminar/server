@@ -4,11 +4,14 @@ package com.example.server.DTO;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class ReservationCreateDTO {
     Long tableId;
-    String name;
+    List<String> name;
     String reason;
-    int time;
+    int startAt;
+    int endAt;
 }
