@@ -1,6 +1,7 @@
 package com.example.server.reservation;
 
 import com.example.server.classroom.Classroom;
+import com.example.server.student.Student;
 import com.example.server.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -35,7 +36,7 @@ public class Reservation {
     private Classroom classroom;
 
     @Column(nullable = false)
-    private List<User> groups;
+    private List<Student> groups;
 
     @Column(nullable = false)
     @JsonIgnore

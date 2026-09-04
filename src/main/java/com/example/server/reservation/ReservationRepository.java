@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-    List<Reservation> findAllByClassroomAndStartAtBetween(Classroom classroom, int startAtAfter, int startAtBefore);
     List<Reservation> findAllByClassroom(Classroom classroom);
 
     @Query(nativeQuery = true, value = "update User u set u.status='REFUSE' where u.startAt between :start and :end")

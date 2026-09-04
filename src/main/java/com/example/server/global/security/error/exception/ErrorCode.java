@@ -13,8 +13,9 @@ public enum ErrorCode {
     NOT_ABLE_RESERVATION("예약 불가", HttpStatus.CONFLICT),
     RESERVATION_NOT_FOUND("해당 예약 없음", HttpStatus.NOT_FOUND),
 
+    OVERLAP_JOIN_STUDENT("학생 중복 회원가입 불가", HttpStatus.CONFLICT),
     IS_USE_NAME("이미 사용중인 아이디",HttpStatus.CONFLICT),
-    TEACHER_NOT_FOUND("해당 계정 없음", HttpStatus.NOT_FOUND),
+    USER_NOT_FOUND("해당 계정 없음", HttpStatus.NOT_FOUND),
     NOT_ALLOW_LOGIN("아이디 또는 비밀번호가 틀림",HttpStatus.UNAUTHORIZED),
     NOT_EQUALS_PASSWORD("비밀번호 불일치",HttpStatus.BAD_REQUEST),
 

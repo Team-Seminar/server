@@ -3,10 +3,9 @@ package com.example.server.reservation;
 import com.example.server.DTO.ReservationCreateDTO;
 import com.example.server.classroom.Classroom;
 import com.example.server.classroom.ClassroomRepository;
-import com.example.server.classroom.ClassroomService;
 import com.example.server.global.security.error.exception.CustomException;
 import com.example.server.global.security.error.exception.ErrorCode;
-import com.example.server.user.UserRepository;
+import com.example.server.student.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +20,7 @@ import java.util.stream.Collectors;
 public class ReservationService {
     final private ReservationRepository reservationRepository;
     private final ClassroomRepository classroomRepository;
-    private final UserRepository userRepository;
-    final private ClassroomService classroomService;
+    private final StudentRepository studentRepository;
 
     //읽기
     public Reservation reservationGet(Long reservationId){
@@ -44,9 +42,12 @@ public class ReservationService {
                 .endAt(dto.getEndAt())
                 .reason(dto.getReason())
                 .classroom(classroomRepository.findById(dto.getTableId()).orElseThrow(()->new CustomException(ErrorCode.CLASS_NOT_FOUND)))
+                //받은 이름 리스트를 기준으로 DB조회해서 List<String>를 List<Student>로 변경
                 .groups(dto.getName().stream()
                         .map((userName)->{
-                            return userRepository.findByName(userName).orElseThrow(()->new CustomException(ErrorCode.TEACHER_NOT_FOUND));
+                            //조회 후 반환. 없으면 예약 생성 취소
+                            return studentRepository.findByLoginId(userName)
+                                    .orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND));
                         })
                         .collect(Collectors.toList())
                 )
