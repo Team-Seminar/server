@@ -23,16 +23,18 @@ public class ReservationController {
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseDTO RequestCreate(
+            @RequestHeader("Authorization") String token,
             @RequestBody ReservationCreateDTO reservationCreateDTO
     ){
-
         LocalTime nowTime=LocalTime.now();
         if (nowTime.getHour()>6 && nowTime.getHour()<18){
             throw new CustomException(ErrorCode.IS_TIME_NOT);
         }
-
-        return ResponseDTO.success(reservationService.reservationCreate(reservationCreateDTO));
+        return ResponseDTO.success(
+                reservationService.reservationCreate(reservationCreateDTO, token)
+        );
     }
+
     //읽기
     @GetMapping("/{id}")
     public ResponseDTO RequestGet(@PathVariable Long id){

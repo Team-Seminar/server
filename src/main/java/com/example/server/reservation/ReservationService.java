@@ -3,6 +3,7 @@ package com.example.server.reservation;
 import com.example.server.DTO.ReservationCreateDTO;
 import com.example.server.classroom.Classroom;
 import com.example.server.classroom.ClassroomRepository;
+import com.example.server.global.security.JWT.TokenManager;
 import com.example.server.global.security.error.exception.CustomException;
 import com.example.server.global.security.error.exception.ErrorCode;
 import com.example.server.student.StudentRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
@@ -21,6 +23,7 @@ public class ReservationService {
     final private ReservationRepository reservationRepository;
     private final ClassroomRepository classroomRepository;
     private final StudentRepository studentRepository;
+    private final TokenManager tokenManager;
 
     //읽기
     public Reservation reservationGet(Long reservationId){
@@ -34,9 +37,16 @@ public class ReservationService {
     }
     //생성
     @Transactional
-    public String reservationCreate(ReservationCreateDTO dto){
+    public String reservationCreate(ReservationCreateDTO dto, String token){
         int num = ThreadLocalRandom.current().nextInt(0, 10000);
-        String randomCode = String.format("%04d", num);
+        final String randomCode = String.format("%04d", num);
+        //토큰에서 유저 로그인 아이디 정보 추출하여 리스트에 추가하기
+        dto.getName().add(
+                studentRepository.findById(UUID.fromString(tokenManager.getSubject(token)))
+                .orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND))
+                .getLoginId()
+        );
+        //예약 생성
         Reservation reservation = Reservation.builder()
                 .startAt(dto.getStartAt())
                 .endAt(dto.getEndAt())
@@ -45,6 +55,7 @@ public class ReservationService {
                 //받은 이름 리스트를 기준으로 DB조회해서 List<String>를 List<Student>로 변경
                 .groups(dto.getName().stream()
                         .map((userName)->{
+
                             //조회 후 반환. 없으면 예약 생성 취소
                             return studentRepository.findByLoginId(userName)
                                     .orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND));
@@ -53,6 +64,7 @@ public class ReservationService {
                 )
                 .password(randomCode)
                 .build();
+        //저장 및 랜덤으로 생성한 비밀번호 반환
         reservationRepository.save(reservation);
         return randomCode;
     }

@@ -88,4 +88,8 @@ public class TokenManager {
             return null;
         }
     }
+
+    public String getSubject(String token){
+        return getToken(token).getSubject();
+    }
 }
