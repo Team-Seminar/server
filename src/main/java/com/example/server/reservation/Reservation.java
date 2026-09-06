@@ -36,6 +36,7 @@ public class Reservation {
     private Classroom classroom;
 
     @Column(nullable = false)
+    @OneToMany
     private List<Student> groups;
 
     @Column(nullable = false)
