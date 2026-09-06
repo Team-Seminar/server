@@ -1,14 +1,21 @@
 package com.example.server.global.security.JWT;
 
 import com.example.server.DTO.TokensDTO;
+import com.example.server.global.security.JWT.refreshToken.RefreshToken;
+import com.example.server.global.security.JWT.refreshToken.RefreshTokenRepository;
+import com.example.server.global.security.error.exception.CustomException;
+import com.example.server.global.security.error.exception.ErrorCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.codec.Hex;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 //id는 subject에 저장
@@ -18,17 +25,28 @@ import java.util.*;
 @Component
 public class TokenManager {
     private final SecretKey SECRET_KEY;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     final static private Long VALID_TIME= 30 * 60 * 1000L; //토큰 허용 시간(30분)
     final static private Long REFRESH_VALID_TIME= 14*24*60 * 60 * 1000L; //토큰 허용 시간(30분)
 
-    public TokenManager(TokenProperty tokenProperty){
-
+    public TokenManager(TokenProperty tokenProperty, RefreshTokenRepository refreshTokenRepository){
+        this.refreshTokenRepository=refreshTokenRepository;
         final String SECRET_KEY_STRING = tokenProperty.secretKey(); //보안 키
         if (SECRET_KEY_STRING == null) {
             throw new IllegalStateException("JWT Secret Key가 null입니다. application.yml 설정을 확인하세요.");
         }
         this.SECRET_KEY=Keys.hmacShaKeyFor(SECRET_KEY_STRING.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private String sha256Hashing(String refreshToken){
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(refreshToken.getBytes(StandardCharsets.UTF_8));
+            return new String(Hex.encode(hash));
+        } catch (NoSuchAlgorithmException e) {
+            throw new CustomException(ErrorCode.NOT_FOUND_WAY);
+        }
     }
 
     public String generateToken(String id, Long exp , Map<String, Object> tokenContent){
@@ -50,7 +68,14 @@ public class TokenManager {
     }
 
     public String refreshTokenCreate(String id){
-        return generateToken(id, REFRESH_VALID_TIME);
+        String refreshTokenStr = generateToken(id, REFRESH_VALID_TIME);
+        RefreshToken refreshToken = RefreshToken.builder()
+                .subject(id)
+                .refreshToken(sha256Hashing(refreshTokenStr))
+                .build();
+
+        refreshTokenRepository.save(refreshToken);
+        return refreshTokenStr;
     }
     public String accessTokenCreate(String id, Map<String, Object> tokenContent){
         return generateToken(id, VALID_TIME, tokenContent);

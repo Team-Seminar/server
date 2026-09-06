@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 @Getter
 public enum ErrorCode {
+    NOT_FOUND_WAY("해당 방법을 찾을 수 없음",HttpStatus.INTERNAL_SERVER_ERROR),
+
     CLASS_NOT_FOUND("해당 교실 없음", HttpStatus.NOT_FOUND),
 
     IS_TIME_NOT("예약 가능 시간이 아님", HttpStatus.CONFLICT),

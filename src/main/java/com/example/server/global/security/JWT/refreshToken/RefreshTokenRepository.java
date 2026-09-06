@@ -1,0 +1,5 @@
+package com.example.server.global.security.JWT.refreshToken;
+import org.springframework.data.repository.CrudRepository;
+
+public interface RefreshTokenRepository extends CrudRepository<RefreshToken, String> {
+}
