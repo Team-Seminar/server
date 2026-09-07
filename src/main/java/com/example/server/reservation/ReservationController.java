@@ -58,13 +58,13 @@ public class ReservationController {
         reservationService.reservationUpdate(id, status);
     }
 
-    @PatchMapping("/{id}/use")
+    @PatchMapping("/{classroomId}/use")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void use(
-            @PathVariable Long id,
+            @PathVariable Long classroomId,
             @RequestBody ReservationUseDTO useDTO
-            ){
-        reservationService.reservationUse(id, useDTO);
+    ){
+        reservationService.reservationUse(classroomId, useDTO);
     }
 
     //삭제

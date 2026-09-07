@@ -40,7 +40,11 @@ public class ReservationService {
     @Transactional
     public String reservationCreate(ReservationCreateDTO dto, String token){
         int num = ThreadLocalRandom.current().nextInt(0, 10000);
-        final String randomCode = String.format("%04d", num);
+        String randomCode = String.format("%04d", num);
+        while(reservationRepository.existsByPassword(randomCode)){ //중복 제외
+            num=ThreadLocalRandom.current().nextInt(0, 10000);
+            randomCode = String.format("%04d", num);
+        }
         //토큰에서 유저 로그인 아이디 정보 추출하여 리스트에 추가하기
         dto.getName().add(
                 studentRepository.findById(UUID.fromString(tokenManager.getSubject(token)))
@@ -89,16 +93,11 @@ public class ReservationService {
     }
 
     @Transactional
-    public void reservationUse(Long id, ReservationUseDTO useDTO){
-        Reservation reservation=reservationRepository.findById(id)
+    public void reservationUse(Long classroomId, ReservationUseDTO useDTO){
+        Classroom classroom = classroomRepository.findById(classroomId)
+                .orElseThrow(()->new CustomException(ErrorCode.CLASS_NOT_FOUND));
+        Reservation reservation = reservationRepository.findByClassroomAndPasswordAndStatus(classroom, useDTO.reservationPW(), ReservationStatus.ALLOW)
                 .orElseThrow(()->new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
-
-        if (reservation.getStatus()!=ReservationStatus.ALLOW){ //예약이 승인된 예약만 사용 가능
-            throw new CustomException(ErrorCode.IS_NOT_ALLOW);
-        }
-        if (!reservation.getPassword().equals(useDTO.reservationPW())){ //비밀번호가 같으면 사용 가능
-            throw new CustomException(ErrorCode.NOT_EQUALS_PASSWORD);
-        }
 
         reservation.updateStatus(ReservationStatus.USE);
     }

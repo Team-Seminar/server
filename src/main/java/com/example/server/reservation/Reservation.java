@@ -39,7 +39,7 @@ public class Reservation {
     @OneToMany
     private List<Student> groups;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @JsonIgnore
     private String password;
 

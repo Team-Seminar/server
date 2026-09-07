@@ -11,6 +11,8 @@ import java.util.Optional;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
     List<Reservation> findAllByClassroom(Classroom classroom);
+    boolean existsByPassword(String password);
+    Optional<Reservation> findByClassroomAndPasswordAndStatus(Classroom classroom, String password, ReservationStatus status);
 
     @Query(nativeQuery = true, value = "update User u set u.status='REFUSE' where u.startAt between :start and :end")
     @Modifying
