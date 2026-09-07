@@ -1,6 +1,7 @@
 package com.example.server.reservation;
 
 import com.example.server.DTO.ReservationCreateDTO;
+import com.example.server.DTO.ReservationUseDTO;
 import com.example.server.classroom.Classroom;
 import com.example.server.classroom.ClassroomRepository;
 import com.example.server.global.security.JWT.TokenManager;
@@ -85,5 +86,19 @@ public class ReservationService {
             reservationRepository.updateRefuse(reservation.startAt, reservation.endAt);
         }
         reservation.updateStatus(status);
+    }
+
+    @Transactional
+    public void reservationUse(Long id, ReservationUseDTO useDTO){
+        Reservation reservation=reservationRepository.findById(id)
+                .orElseThrow(()->new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
+
+        if (
+                reservation.getStatus()!=ReservationStatus.ALLOW || //예약이 승인된 예약만 사용 가능
+                !reservation.getPassword().equals(useDTO.reservationPW()) //비밀번호가 같으면 사용 가능
+        ){
+            throw new CustomException(ErrorCode.IS_NOT_ALLOW);
+        }
+        reservation.updateStatus(ReservationStatus.USE);
     }
 }

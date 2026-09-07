@@ -1,6 +1,7 @@
 package com.example.server.reservation;
 
 import com.example.server.DTO.ReservationCreateDTO;
+import com.example.server.DTO.ReservationUseDTO;
 import com.example.server.DTO.ResponseDTO;
 import com.example.server.classroom.Classroom;
 import com.example.server.classroom.ClassroomService;
@@ -50,8 +51,20 @@ public class ReservationController {
     @PreAuthorize("hasAuthority('TEACHER')")
     @PatchMapping("/Status")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void UpdateStatus(@RequestParam Long id, @RequestParam ReservationStatus status){
+    public void UpdateStatus(
+            @RequestParam Long id,
+            @RequestParam ReservationStatus status
+    ){
         reservationService.reservationUpdate(id, status);
+    }
+
+    @PatchMapping("/{id}/use")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void use(
+            @PathVariable Long id,
+            @RequestBody ReservationUseDTO useDTO
+            ){
+        reservationService.reservationUse(id, useDTO);
     }
 
     //삭제

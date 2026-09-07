@@ -11,6 +11,7 @@ public enum ErrorCode {
 
     CLASS_NOT_FOUND("해당 교실 없음", HttpStatus.NOT_FOUND),
 
+    IS_NOT_ALLOW("허용된 예약이 아님", HttpStatus.CONFLICT),
     IS_TIME_NOT("예약 가능 시간이 아님", HttpStatus.CONFLICT),
     NOT_ABLE_RESERVATION("예약 불가", HttpStatus.CONFLICT),
     RESERVATION_NOT_FOUND("해당 예약 없음", HttpStatus.NOT_FOUND),
