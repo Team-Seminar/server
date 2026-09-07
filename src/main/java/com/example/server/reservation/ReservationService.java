@@ -93,12 +93,13 @@ public class ReservationService {
         Reservation reservation=reservationRepository.findById(id)
                 .orElseThrow(()->new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
 
-        if (
-                reservation.getStatus()!=ReservationStatus.ALLOW || //예약이 승인된 예약만 사용 가능
-                !reservation.getPassword().equals(useDTO.reservationPW()) //비밀번호가 같으면 사용 가능
-        ){
+        if (reservation.getStatus()!=ReservationStatus.ALLOW){ //예약이 승인된 예약만 사용 가능
             throw new CustomException(ErrorCode.IS_NOT_ALLOW);
         }
+        if (!reservation.getPassword().equals(useDTO.reservationPW())){ //비밀번호가 같으면 사용 가능
+            throw new CustomException(ErrorCode.NOT_EQUALS_PASSWORD);
+        }
+
         reservation.updateStatus(ReservationStatus.USE);
     }
 }
