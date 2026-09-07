@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -42,6 +43,10 @@ public class Reservation {
     @Column(nullable = false, unique = true)
     @JsonIgnore
     private String password;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private LocalDateTime createAt=LocalDateTime.now();
 
     public void updateStatus(ReservationStatus status){
         this.status=status;
