@@ -21,11 +21,4 @@ public class StudentController {
         return ResponseDTO.success(studentService.join(joinDTO));
     }
 
-    @PostMapping("/login")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseDTO login(
-            @RequestBody UserLoginDTO userLoginDTO
-    ){
-        return ResponseDTO.success(studentService.login(userLoginDTO));
-    }
 }
