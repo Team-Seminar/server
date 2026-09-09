@@ -1,4 +1,4 @@
-package com.example.server.teacher;
+package com.example.server.user;
 
 import com.example.server.DTO.ResponseDTO;
 import com.example.server.DTO.UserLoginDTO;
@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/teachers")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
-public class TeacherController {
-    private final TeacherService teacherService;
+public class UserController {
+    private final UserService userService;
 
     @PostMapping("/login")
     public ResponseDTO login(
             @RequestBody UserLoginDTO loginDTO
     ){
-        return ResponseDTO.success(teacherService.login(loginDTO));
+        return ResponseDTO.success(userService.login(loginDTO));
     }
 }

@@ -7,21 +7,28 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
-@MappedSuperclass
+
+
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @SuperBuilder
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
 public class User {
     @Id
     @Builder.Default
     final UUID id=UUID.randomUUID();
 
+    //역할 고정
+    @Column(nullable = false, updatable = false)
+    @Enumerated(value = EnumType.STRING)
+    private UserRole role;
+
     @Column(unique = true, nullable = false)
-    String loginId;
+    private String loginId;
 
     @Column(nullable = false)
     @JsonIgnore
-    String pw;
+    private String pw;
 
 }
