@@ -2,12 +2,15 @@ package com.example.server.student;
 
 import com.example.server.user.User;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import com.example.server.user.UserRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 =======
+=======
+>>>>>>> Stashed changes
 import jakarta.persistence.*;
 >>>>>>> Stashed changes
 import lombok.AllArgsConstructor;
