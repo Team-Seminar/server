@@ -18,7 +18,7 @@ public class RefreshToken {
 
     private String refreshToken;
 
-    @TimeToLive // 초(second) 단위로 TTL 지정 (예: 7일 = 604,800초)
+    @TimeToLive
     @Builder.Default
     private Long expiration = 60L*60*24*7;
 }

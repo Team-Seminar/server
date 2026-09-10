@@ -1,6 +1,7 @@
 package com.example.server.user;
 
 import com.example.server.DTO.ResponseDTO;
+import com.example.server.DTO.TokensDTO;
 import com.example.server.DTO.UserLoginDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,5 +20,12 @@ public class UserController {
             @RequestBody UserLoginDTO loginDTO
     ){
         return ResponseDTO.success(userService.login(loginDTO));
+    }
+
+    @PostMapping("/refresh")
+    public ResponseDTO refresh(
+            @RequestBody TokensDTO tokensDTO
+    ){
+        return ResponseDTO.success(userService.refresh(tokensDTO));
     }
 }
