@@ -48,8 +48,9 @@ public class ReservationService {
         //토큰에서 유저 로그인 아이디 정보 추출하여 리스트에 추가하기
         dto.getName().add(
                 studentRepository.findById(UUID.fromString(tokenManager.getSubject(token)))
-                .orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND))
-                .getLoginId()
+                        .orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND))
+                        .getUser()
+                        .getLoginId()
         );
         //예약 생성
         Reservation reservation = Reservation.builder()
@@ -62,7 +63,7 @@ public class ReservationService {
                         .map((userName)->{
 
                             //조회 후 반환. 없으면 예약 생성 취소
-                            return studentRepository.findByLoginId(userName)
+                            return studentRepository.findByUser_LoginId(userName)
                                     .orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND));
                         })
                         .collect(Collectors.toList())
