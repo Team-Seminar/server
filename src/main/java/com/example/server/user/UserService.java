@@ -3,6 +3,7 @@ package com.example.server.user;
 import com.example.server.DTO.TokensDTO;
 import com.example.server.DTO.UserLoginDTO;
 import com.example.server.global.security.JWT.TokenManager;
+import com.example.server.global.security.JWT.refreshToken.RefreshToken;
 import com.example.server.global.security.JWT.refreshToken.RefreshTokenRepository;
 import com.example.server.global.security.error.exception.CustomException;
 import com.example.server.global.security.error.exception.ErrorCode;
@@ -29,19 +30,26 @@ public class UserService {
 
     @Transactional
     public TokensDTO refresh(
-            String refreshToken
+            TokensDTO tokensDTO
     ){
+        String refreshToken = tokensDTO.refreshToken();
         String sub = tokenManager.getSubject(refreshToken);
-        String hashRefreshToken = refreshTokenRepository.findById(sub)
-                .orElseThrow(()->new CustomException(ErrorCode.TOKEN_NOT_FOUND))
-                .getSubject();
+        RefreshToken hashRefreshToken = refreshTokenRepository.findById(sub)
+                .orElseThrow(()->new CustomException(ErrorCode.TOKEN_NOT_FOUND));
+        User user = userRepository.findById(UUID.fromString(sub)).orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        //서버 refresh토큰과 입력된 refresh토큰의 동일 여부 검증
         if (!MessageDigest.isEqual(
                 tokenManager.sha256Hashing(refreshToken).getBytes(),
-                hashRefreshToken.getBytes()
+                hashRefreshToken.getRefreshToken().getBytes()
         )){
             throw new CustomException(ErrorCode.TOKEN_FORGERY);
         }
-        User user = userRepository.findById(UUID.fromString(sub)).orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND));
+        //access토큰과 refresh토큰의 subject 동일 여부 검증
+        if (!user.getId().equals(UUID.fromString(tokenManager.getSubject(tokensDTO.accessToken())))){
+            throw new CustomException(ErrorCode.TOKEN_FORGERY);
+        }
+        refreshTokenRepository.delete(hashRefreshToken);
         return tokenManager.createToken(user.getId().toString(), user.getRole().toStr());
     }
 }
