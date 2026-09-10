@@ -39,7 +39,7 @@ public class TokenManager {
         this.SECRET_KEY=Keys.hmacShaKeyFor(SECRET_KEY_STRING.getBytes(StandardCharsets.UTF_8));
     }
 
-    private String sha256Hashing(String refreshToken){
+    public String sha256Hashing(String refreshToken){
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(refreshToken.getBytes(StandardCharsets.UTF_8));
@@ -49,7 +49,7 @@ public class TokenManager {
         }
     }
 
-    public String generateToken(String id, Long exp , Map<String, Object> tokenContent){
+    private String generateToken(String id, Long exp , Map<String, Object> tokenContent){
         Date now = new Date();
         Date expirationTime = new Date(now.getTime()+exp);
         if (id==null || id.isEmpty()){
@@ -63,11 +63,11 @@ public class TokenManager {
                 .signWith(this.SECRET_KEY)
                 .compact();
     }
-    public String generateToken(String id, Long exp){
+    private String generateToken(String id, Long exp){
         return generateToken(id, exp, new HashMap<>());
     }
 
-    public String refreshTokenCreate(String id){
+    private String refreshTokenCreate(String id){
         String refreshTokenStr = generateToken(id, REFRESH_VALID_TIME);
         RefreshToken refreshToken = RefreshToken.builder()
                 .subject(id)
@@ -77,7 +77,7 @@ public class TokenManager {
         refreshTokenRepository.save(refreshToken);
         return refreshTokenStr;
     }
-    public String accessTokenCreate(String id, Map<String, Object> tokenContent){
+    private String accessTokenCreate(String id, Map<String, Object> tokenContent){
         return generateToken(id, VALID_TIME, tokenContent);
     }
 
@@ -113,7 +113,6 @@ public class TokenManager {
             return null;
         }
     }
-
     public String getSubject(String token){
         return getToken(token).getSubject();
     }
