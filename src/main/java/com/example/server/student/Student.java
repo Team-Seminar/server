@@ -6,7 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-//tete
+
+import java.util.UUID;
+
 @Entity
 @SuperBuilder
 @AllArgsConstructor
@@ -14,7 +16,11 @@ import lombok.experimental.SuperBuilder;
 @Getter
 public class Student{
     @Id
+    private UUID id;
+
+    @MapsId
     @OneToOne
+    @JoinColumn(name = "user_id") //에러뜨지만 잘 돌아감
     private User user;
 
     @Column(length = 4, nullable = false)
