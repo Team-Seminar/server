@@ -36,7 +36,7 @@ public class Reservation {
     @ManyToOne
     private Classroom classroom;
 
-    @Column(nullable = false)
+    @JoinColumn(nullable = false)
     @OneToMany
     private List<Student> groups;
 
