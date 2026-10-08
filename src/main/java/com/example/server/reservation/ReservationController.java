@@ -28,7 +28,10 @@ public class ReservationController {
             @RequestBody ReservationCreateDTO reservationCreateDTO
     ){
         LocalTime nowTime=LocalTime.now();
-        if (nowTime.getHour()>6 && nowTime.getHour()<18){
+        if (
+                nowTime.isAfter(LocalTime.of(8,0)) &&
+                nowTime.isBefore(LocalTime.of(4,20))
+        ){
             throw new CustomException(ErrorCode.IS_TIME_NOT);
         }
         return ResponseDTO.success(
