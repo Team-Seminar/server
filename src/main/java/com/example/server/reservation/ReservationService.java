@@ -34,7 +34,7 @@ public class ReservationService {
     public List<Reservation> reservationGetAll(){
         return reservationRepository.findAll();
     }
-    public List<Reservation> reservationGet(Classroom classroom){
+    public List<Reservation> reservationGetAll(Classroom classroom){
         return reservationRepository.findAllByClassroom(classroom);
     }
     //생성

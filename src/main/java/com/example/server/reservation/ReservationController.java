@@ -45,6 +45,11 @@ public class ReservationController {
         return ResponseDTO.success(reservationService.reservationGet(id));
     }
 
+    @GetMapping("/{classroomId}")
+    public ResponseDTO getAllByClassroom (@PathVariable Long classroomId){
+        return ResponseDTO.success(reservationService.reservationGetAll(classroomService.classroomGet(classroomId)));
+    }
+
     @GetMapping()
     public ResponseDTO RequestGetAll(){
         return ResponseDTO.success(reservationService.reservationGetAll());
