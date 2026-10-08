@@ -7,6 +7,7 @@ import com.example.server.classroom.ClassroomRepository;
 import com.example.server.global.security.JWT.TokenManager;
 import com.example.server.global.security.error.exception.CustomException;
 import com.example.server.global.security.error.exception.ErrorCode;
+import com.example.server.reservation.repository.ReservationRepository;
 import com.example.server.student.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
