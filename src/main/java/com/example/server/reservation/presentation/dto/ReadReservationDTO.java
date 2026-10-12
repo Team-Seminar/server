@@ -1,9 +1,11 @@
 package com.example.server.reservation.presentation.dto;
 
 import com.example.server.reservation.ReservationStatus;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
 
+@Builder
 public record ReadReservationDTO(
         Long id, //식별
         String reason, //예약 사유
