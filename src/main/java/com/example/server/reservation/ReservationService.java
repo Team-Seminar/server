@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -35,11 +36,17 @@ public class ReservationService {
                 .orElseThrow(()->new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
         return ReadReservationDTO.EntityToDTO(reservation);
     }
-    public List<Reservation> reservationGetAll(){
-        return reservationRepository.findAll();
+    public List<ReadReservationDTO> reservationGetAll(){
+        List<Reservation> reservationList = reservationRepository.findAll();
+        return reservationList.stream()
+                .map(ReadReservationDTO::EntityToDTO)
+                .toList();
     }
-    public List<Reservation> reservationGetAll(Classroom classroom){
-        return reservationRepository.findAllByClassroom(classroom);
+    public List<ReadReservationDTO> reservationGetAll(Classroom classroom){
+        List<Reservation> reservationList = reservationRepository.findAllByClassroom(classroom);
+        return reservationList.stream()
+                .map(ReadReservationDTO::EntityToDTO)
+                .toList();
     }
     //생성
     @Transactional
