@@ -55,20 +55,8 @@ public class ReservationService {
         );
         //예약 생성
         Reservation reservation = Reservation.builder()
-                .startAt(dto.getStartAt())
-                .endAt(dto.getEndAt())
                 .reason(dto.getReason())
                 .classroom(classroomRepository.findById(dto.getTableId()).orElseThrow(()->new CustomException(ErrorCode.CLASS_NOT_FOUND)))
-                //받은 이름 리스트를 기준으로 DB조회해서 List<String>를 List<Student>로 변경
-                .groups(dto.getName().stream()
-                        .map((userName)->{
-
-                            //조회 후 반환. 없으면 예약 생성 취소
-                            return studentRepository.findByUser_LoginId(userName)
-                                    .orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND));
-                        })
-                        .collect(Collectors.toList())
-                )
                 .password(randomCode)
                 .build();
         //저장 및 랜덤으로 생성한 비밀번호 반환
@@ -88,10 +76,10 @@ public class ReservationService {
         Reservation reservation = reservationRepository
                 .findById(id)
                 .orElseThrow(()->new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
-        if (status == ReservationStatus.ALLOW) {
-            reservationRepository.updateRefuse(reservation.startAt, reservation.endAt);
-        }
-        reservation.updateStatus(status);
+//        if (status == ReservationStatus.ALLOW) {
+//            reservationRepository.updateRefuse(reservation.startAt, reservation.endAt);
+//        }
+        reservation.setStatus(status);
     }
 
     @Transactional
@@ -101,6 +89,6 @@ public class ReservationService {
         Reservation reservation = reservationRepository.findByClassroomAndPasswordAndStatus(classroom, useDTO.reservationPW(), ReservationStatus.ALLOW)
                 .orElseThrow(()->new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
 
-        reservation.updateStatus(ReservationStatus.USE);
+        reservation.setStatus(ReservationStatus.USE);
     }
 }
