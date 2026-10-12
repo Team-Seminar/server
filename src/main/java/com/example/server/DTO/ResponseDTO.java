@@ -7,20 +7,20 @@ import org.springframework.http.ResponseEntity;
 import java.util.Map;
 
 @Builder
-public record ResponseDTO(
+public record ResponseDTO<T>(
         boolean success,
-        Object data
+        T data
 ) {
-    public static ResponseDTO success(Object data){
-        return ResponseDTO.builder()
+    public static<T> ResponseDTO<T> success(T data){
+        return ResponseDTO.<T>builder()
                 .success(true)
                 .data(data)
                 .build();
     }
 
-    public static ResponseEntity<ResponseDTO> error(String message, HttpStatus status){
+    public static ResponseEntity<ResponseDTO<Map<String, ?>>> error(String message, HttpStatus status){
         Map<String, ?> data=Map.of("message", message, "status", status);
-        ResponseDTO resBody= ResponseDTO.builder()
+        ResponseDTO<Map<String, ?>> resBody= ResponseDTO.<Map<String, ?>>builder()
                 .success(false)
                 .data(data)
                 .build();
