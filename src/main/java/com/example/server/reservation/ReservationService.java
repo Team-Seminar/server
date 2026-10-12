@@ -1,13 +1,15 @@
 package com.example.server.reservation;
 
-import com.example.server.DTO.ReservationCreateDTO;
-import com.example.server.DTO.ReservationUseDTO;
+import com.example.server.reservation.presentation.dto.ReadReservationDTO;
+import com.example.server.reservation.presentation.dto.ReservationCreateDTO;
+import com.example.server.reservation.presentation.dto.ReservationUseDTO;
 import com.example.server.classroom.Classroom;
 import com.example.server.classroom.ClassroomRepository;
 import com.example.server.global.security.JWT.TokenManager;
 import com.example.server.global.security.error.exception.CustomException;
 import com.example.server.global.security.error.exception.ErrorCode;
 import com.example.server.reservation.repository.ReservationRepository;
+import com.example.server.reservationSlot.ReservationSlotRepository;
 import com.example.server.student.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -24,12 +25,15 @@ import java.util.stream.Collectors;
 public class ReservationService {
     final private ReservationRepository reservationRepository;
     private final ClassroomRepository classroomRepository;
+    private final ReservationSlotRepository slotRepository;
     private final StudentRepository studentRepository;
     private final TokenManager tokenManager;
 
     //읽기
-    public Reservation reservationGet(Long reservationId){
-        return reservationRepository.findById(reservationId).orElseThrow(()->new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
+    public ReadReservationDTO reservationGet(Long reservationId){
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(()->new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
+        return ReadReservationDTO.EntityToDTO(reservation);
     }
     public List<Reservation> reservationGetAll(){
         return reservationRepository.findAll();
