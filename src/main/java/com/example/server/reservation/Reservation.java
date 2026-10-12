@@ -20,25 +20,16 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-    @Column(nullable = false)
-    int startAt;
-    @Column(nullable = false)
-    int endAt;
-
     @Column(nullable = false)
     private String reason;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @Setter
     private ReservationStatus status= ReservationStatus.READY;
 
     @ManyToOne
     private Classroom classroom;
-
-    @JoinColumn(nullable = false)
-    @OneToMany
-    private List<Student> groups;
 
     @Column(nullable = false, unique = true)
     @JsonIgnore
@@ -47,8 +38,4 @@ public class Reservation {
     @Column(nullable = false)
     @Builder.Default
     private LocalDateTime createAt=LocalDateTime.now();
-
-    public void updateStatus(ReservationStatus status){
-        this.status=status;
-    }
 }
