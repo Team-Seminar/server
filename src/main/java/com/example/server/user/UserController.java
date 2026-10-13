@@ -16,16 +16,16 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseDTO login(
+    public ResponseDTO<TokensDTO> login(
             @RequestBody UserLoginDTO loginDTO
     ){
-        return ResponseDTO.success(userService.login(loginDTO));
+        return ResponseDTO.<TokensDTO>success(userService.login(loginDTO));
     }
 
     @PostMapping("/refresh")
-    public ResponseDTO refresh(
+    public ResponseDTO<TokensDTO> refresh(
             @RequestBody TokensDTO tokensDTO
     ){
-        return ResponseDTO.success(userService.refresh(tokensDTO));
+        return ResponseDTO.<TokensDTO>success(userService.refresh(tokensDTO));
     }
 }

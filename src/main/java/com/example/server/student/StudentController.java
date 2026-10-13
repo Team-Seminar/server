@@ -15,10 +15,10 @@ public class StudentController {
 
     @PostMapping("/join")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseDTO join(
+    public ResponseDTO<String> join(
             @RequestBody StudentJoinDTO joinDTO
     ){
-        return ResponseDTO.success(studentService.join(joinDTO));
+        return ResponseDTO.<String>success(studentService.join(joinDTO));
     }
 
 }
