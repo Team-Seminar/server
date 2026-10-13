@@ -1,5 +1,6 @@
 package com.example.server.reservation.presentation;
 
+import com.example.server.reservation.presentation.dto.ReadReservationDTO;
 import com.example.server.reservation.presentation.dto.ReservationCreateDTO;
 import com.example.server.reservation.presentation.dto.ReservationUseDTO;
 import com.example.server.DTO.ResponseDTO;
@@ -14,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalTime;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,7 +26,7 @@ public class ReservationController {
     //생성
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseDTO RequestCreate(
+    public ResponseDTO<String> RequestCreate(
             @RequestHeader("Authorization") String token,
             @RequestBody ReservationCreateDTO reservationCreateDTO
     ){
@@ -35,25 +37,25 @@ public class ReservationController {
         ){
             throw new CustomException(ErrorCode.IS_TIME_NOT);
         }
-        return ResponseDTO.success(
+        return ResponseDTO.<String>success(
                 reservationService.reservationCreate(reservationCreateDTO, token)
         );
     }
 
     //읽기
     @GetMapping("/{id}")
-    public ResponseDTO RequestGet(@PathVariable Long id){
-        return ResponseDTO.success(reservationService.reservationGet(id));
+    public ResponseDTO<ReadReservationDTO> RequestGet(@PathVariable Long id){
+        return ResponseDTO.<ReadReservationDTO>success(reservationService.reservationGet(id));
     }
 
     @GetMapping("/{classroomId}")
-    public ResponseDTO getAllByClassroom (@PathVariable Long classroomId){
-        return ResponseDTO.success(reservationService.reservationGetAll(classroomService.classroomGet(classroomId)));
+    public ResponseDTO<List<ReadReservationDTO>> getAllByClassroom (@PathVariable Long classroomId){
+        return ResponseDTO.<List<ReadReservationDTO>>success(reservationService.reservationGetAll(classroomService.classroomGet(classroomId)));
     }
 
     @GetMapping()
-    public ResponseDTO RequestGetAll(){
-        return ResponseDTO.success(reservationService.reservationGetAll());
+    public ResponseDTO<List<ReadReservationDTO>> RequestGetAll(){
+        return ResponseDTO.<List<ReadReservationDTO>>success(reservationService.reservationGetAll());
     }
 
     //수정
