@@ -13,12 +13,12 @@ import java.util.List;
 public class ClassroomController {
     final private ClassroomService classroomService;
     @GetMapping("/{id}")
-    public ResponseDTO classroomGet(@PathVariable Long id){
-        return ResponseDTO.success(classroomService.classroomGet(id));
+    public ResponseDTO<Classroom> classroomGet(@PathVariable Long id){
+        return ResponseDTO.<Classroom>success(classroomService.classroomGet(id));
     }
     @GetMapping()
-    public ResponseDTO classroomGetAll(){
-        return ResponseDTO.success(classroomService.classroomGetAll());
+    public ResponseDTO<List<Classroom>> classroomGetAll(){
+        return ResponseDTO.<List<Classroom>>success(classroomService.classroomGetAll());
     }
 
 }
