@@ -7,6 +7,7 @@ import com.example.server.user.User;
 import com.example.server.user.UserRepository;
 import com.example.server.user.UserRole;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class    StudentService {
     private final UserRepository userRepository;
     private final StudentRepository studentRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public String join(StudentJoinDTO dto){
@@ -32,7 +34,7 @@ public class    StudentService {
         User user = User.builder()
                         .role(UserRole.STUDENT)
                         .loginId(dto.loginId())
-                        .pw(dto.pw())
+                        .pw(passwordEncoder.encode(dto.pw()))
                         .build();
         userRepository.save(user);
 
