@@ -1,13 +1,13 @@
-package com.example.server.user;
+package com.example.server.user.presentation;
 
 import com.example.server.DTO.ResponseDTO;
+import com.example.server.DTO.StudentJoinDTO;
 import com.example.server.DTO.TokensDTO;
 import com.example.server.DTO.UserLoginDTO;
+import com.example.server.user.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -27,5 +27,13 @@ public class UserController {
             @RequestBody TokensDTO tokensDTO
     ){
         return ResponseDTO.<TokensDTO>success(userService.refresh(tokensDTO));
+    }
+
+    @PostMapping("/join")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void join(
+            @RequestBody StudentJoinDTO joinDTO
+    ){
+        userService.join(joinDTO);
     }
 }
