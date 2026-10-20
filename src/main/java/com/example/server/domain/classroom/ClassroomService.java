@@ -1,7 +1,7 @@
 package com.example.server.domain.classroom;
 
-import com.example.server.global.security.error.exception.CustomException;
-import com.example.server.global.security.error.exception.ErrorCode;
+import com.example.server.global.error.exception.CustomException;
+import com.example.server.global.error.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

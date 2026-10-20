@@ -5,8 +5,8 @@ import com.example.server.domain.reservation.presentation.dto.ReservationCreateD
 import com.example.server.domain.reservation.presentation.dto.ReservationUseDTO;
 import com.example.server.global.common.dto.ResponseDTO;
 import com.example.server.domain.classroom.ClassroomService;
-import com.example.server.global.security.error.exception.CustomException;
-import com.example.server.global.security.error.exception.ErrorCode;
+import com.example.server.global.error.exception.CustomException;
+import com.example.server.global.error.exception.ErrorCode;
 import com.example.server.domain.reservation.ReservationService;
 import com.example.server.domain.reservation.ReservationStatus;
 import lombok.RequiredArgsConstructor;

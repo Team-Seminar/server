@@ -1,7 +1,7 @@
-package com.example.server.global.security.error;
+package com.example.server.global.error;
 
 import com.example.server.global.common.dto.ResponseDTO;
-import com.example.server.global.security.error.exception.CustomException;
+import com.example.server.global.error.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

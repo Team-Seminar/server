@@ -1,8 +1,8 @@
 package com.example.server.domain.student;
 
 import com.example.server.domain.student.presentation.dto.StudentJoinDTO;
-import com.example.server.global.security.error.exception.CustomException;
-import com.example.server.global.security.error.exception.ErrorCode;
+import com.example.server.global.error.exception.CustomException;
+import com.example.server.global.error.exception.ErrorCode;
 import com.example.server.domain.user.UserRepository;
 import com.example.server.domain.user.UserRole;
 import com.example.server.domain.user.UserService;
