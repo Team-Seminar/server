@@ -1,5 +1,6 @@
 package com.example.server.domain.student.presentation;
 
+import com.example.server.domain.student.presentation.dto.StudentJoinDTO;
 import com.example.server.global.common.dto.ResponseDTO;
 import com.example.server.domain.student.StudentService;
 import lombok.RequiredArgsConstructor;
