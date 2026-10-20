@@ -1,6 +1,6 @@
 package com.example.server.global.security.JWT;
 
-import com.example.server.DTO.TokensDTO;
+import com.example.server.global.common.dto.TokensDTO;
 import com.example.server.global.security.JWT.refreshToken.RefreshToken;
 import com.example.server.global.security.JWT.refreshToken.RefreshTokenRepository;
 import com.example.server.global.security.error.exception.CustomException;
@@ -8,7 +8,6 @@ import com.example.server.global.security.error.exception.ErrorCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.codec.Hex;
 import org.springframework.stereotype.Component;
 
