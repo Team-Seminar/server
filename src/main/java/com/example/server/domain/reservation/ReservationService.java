@@ -1,22 +1,20 @@
 package com.example.server.domain.reservation;
 
+import com.example.server.domain.reservation.facade.dto.ReservationCreateDTO;
 import com.example.server.domain.reservation.presentation.dto.ReadReservationDTO;
-import com.example.server.domain.reservation.presentation.dto.ReservationCreateDTO;
+import com.example.server.domain.reservation.presentation.dto.BookingDTO;
 import com.example.server.domain.reservation.presentation.dto.ReservationUseDTO;
 import com.example.server.domain.classroom.Classroom;
 import com.example.server.domain.classroom.ClassroomRepository;
-import com.example.server.global.security.JWT.TokenManager;
 import com.example.server.global.error.exception.CustomException;
 import com.example.server.global.error.exception.ErrorCode;
 import com.example.server.domain.reservation.repository.ReservationRepository;
-import com.example.server.domain.reservationSlot.ReservationSlotRepository;
-import com.example.server.domain.student.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 @RequiredArgsConstructor
@@ -46,7 +44,7 @@ public class ReservationService {
     }
     //생성
     @Transactional
-    public String reservationCreate(ReservationCreateDTO dto){
+    public Map<String,String> reservationCreate(ReservationCreateDTO dto){
         //4자리수 비밀번호 생성
         int num = ThreadLocalRandom.current().nextInt(0, 10000);
         String randomCode = String.format("%04d", num);
@@ -65,7 +63,10 @@ public class ReservationService {
                 .build();
         //저장 및 랜덤으로 생성한 비밀번호 반환
         reservationRepository.save(reservation);
-        return randomCode;
+        return Map.of(
+                "code", randomCode,
+                "id", reservation.getId().toString()
+        );
     }
 
     //삭제
