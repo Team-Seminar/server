@@ -51,9 +51,9 @@ public class UserService {
 
     @Transactional
     public TokensDTO login(UserLoginDTO loginDTO) { //틀렸다면 위에서 에러를 던져 반환값까지 못가게 하는 방식
-        User user = userRepository.findByLoginId(loginDTO.getLoginId())
+        User user = userRepository.findByLoginId(loginDTO.loginId())
                 .orElseThrow(()->new CustomException(ErrorCode.NOT_ALLOW_LOGIN));
-        if(!passwordEncoder.matches(loginDTO.getPw(), user.getPw())){
+        if(!passwordEncoder.matches(loginDTO.pw(), user.getPw())){
             throw new CustomException(ErrorCode.NOT_ALLOW_LOGIN);
         }
         return tokenManager.createToken(user.getId().toString(), user.getRole().toStr());
