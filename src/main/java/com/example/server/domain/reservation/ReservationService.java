@@ -25,9 +25,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ReservationService {
     final private ReservationRepository reservationRepository;
     private final ClassroomRepository classroomRepository;
-    private final ReservationSlotRepository slotRepository;
-    private final StudentRepository studentRepository;
-    private final TokenManager tokenManager;
 
     //읽기
     public ReadReservationDTO reservationGet(Long reservationId){
@@ -49,24 +46,21 @@ public class ReservationService {
     }
     //생성
     @Transactional
-    public String reservationCreate(ReservationCreateDTO dto, String token){
+    public String reservationCreate(ReservationCreateDTO dto){
+        //4자리수 비밀번호 생성
         int num = ThreadLocalRandom.current().nextInt(0, 10000);
         String randomCode = String.format("%04d", num);
         while(reservationRepository.existsByPassword(randomCode)){ //중복 제외
             num=ThreadLocalRandom.current().nextInt(0, 10000);
             randomCode = String.format("%04d", num);
         }
-        //토큰에서 유저 로그인 아이디 정보 추출하여 리스트에 추가하기
-        dto.getName().add(
-                studentRepository.findById(UUID.fromString(tokenManager.getSubject(token)))
-                        .orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND))
-                        .getUser()
-                        .getLoginId()
-        );
         //예약 생성
         Reservation reservation = Reservation.builder()
-                .reason(dto.getReason())
-                .classroom(classroomRepository.findById(dto.getTableId()).orElseThrow(()->new CustomException(ErrorCode.CLASS_NOT_FOUND)))
+                .reason(dto.reason())
+                .classroom(
+                        classroomRepository.findById(dto.tableId())
+                                .orElseThrow(()->new CustomException(ErrorCode.CLASS_NOT_FOUND))
+                )
                 .password(randomCode)
                 .build();
         //저장 및 랜덤으로 생성한 비밀번호 반환
