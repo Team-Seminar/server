@@ -16,13 +16,10 @@ import java.util.UUID;
 @Getter
 public class Student{
     @Id
-    private UUID id;
-
-    @MapsId
     @OneToOne
     @JoinColumn(name = "user_id") //에러뜨지만 잘 돌아감
     private User user;
 
-    @Column(length = 4, nullable = false)
+    @Column(length = 4, nullable = false, unique = true)
     private String schoolNumber; //학번
 }
