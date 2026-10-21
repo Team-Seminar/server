@@ -1,11 +1,14 @@
 package com.example.server.domain.reservationSlot.presentation.dto;
 
 import com.example.server.domain.reservation.Reservation;
-import com.example.server.domain.student.Student;
+import lombok.Builder;
 
+import java.util.UUID;
+
+@Builder
 public record CreateSlotDTO(
-        Student student,
-        Reservation reservation,
+        String schoolNumber,
+        long reservationId,
         int period
 ) {
 }
