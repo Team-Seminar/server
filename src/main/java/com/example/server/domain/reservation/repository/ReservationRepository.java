@@ -13,13 +13,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-    List<Reservation> findAllByClassroom(Classroom classroom);
-    boolean existsByPassword(String password);
-    Optional<Reservation> findByClassroomAndPasswordAndStatus(Classroom classroom, String password, ReservationStatus status);
 
-    @Query(nativeQuery = true, value = "update User u set u.status='REFUSE' where u.startAt between :start and :end")
-    @Modifying
-    void updateRefuse(@Param("start") int start, @Param("end") int end);
+    List<Reservation> findAllByClassroom(Classroom classroom);
+
+    boolean existsByPassword(String password);
+
+    Optional<Reservation> findByClassroomAndPasswordAndStatus(Classroom classroom, String password, ReservationStatus status);
 
     long deleteAllByCreateAtBefore(LocalDateTime createAtBefore);
 }
