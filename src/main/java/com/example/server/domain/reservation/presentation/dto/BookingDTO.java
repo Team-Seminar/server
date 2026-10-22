@@ -4,7 +4,6 @@ import java.util.List;
 
 public record BookingDTO(
     Long tableId,
-    List<String> names,
     List<String> schoolNumbers,
     String reason,
     List<Integer> periods
