@@ -1,7 +1,8 @@
 package com.example.server.domain.reservation.presentation;
 
+import com.example.server.domain.reservation.facade.ReservationFacade;
 import com.example.server.domain.reservation.presentation.dto.ReadReservationDTO;
-import com.example.server.domain.reservation.presentation.dto.ReservationCreateDTO;
+import com.example.server.domain.reservation.presentation.dto.BookingDTO;
 import com.example.server.domain.reservation.presentation.dto.ReservationUseDTO;
 import com.example.server.global.common.dto.ResponseDTO;
 import com.example.server.domain.classroom.ClassroomService;
@@ -22,13 +23,14 @@ import java.util.List;
 @RequestMapping("/api/v1/reservation")
 public class ReservationController {
     final private ReservationService reservationService;
+    private final ReservationFacade reservationFacade;
     final private ClassroomService classroomService;
     //생성
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseDTO<String> RequestCreate(
             @RequestHeader("Authorization") String token,
-            @RequestBody ReservationCreateDTO reservationCreateDTO
+            @RequestBody BookingDTO dto
     ){
         LocalTime nowTime=LocalTime.now();
         if (
@@ -38,7 +40,7 @@ public class ReservationController {
             throw new CustomException(ErrorCode.IS_TIME_NOT);
         }
         return ResponseDTO.<String>success(
-                reservationService.reservationCreate(reservationCreateDTO, token)
+                reservationFacade.booking(token, dto)
         );
     }
 

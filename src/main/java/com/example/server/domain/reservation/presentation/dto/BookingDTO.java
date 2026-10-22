@@ -2,10 +2,10 @@ package com.example.server.domain.reservation.presentation.dto;
 
 import java.util.List;
 
-public record ReservationCreateDTO (
+public record BookingDTO(
     Long tableId,
-    List<String> name,
+    List<String> names,
+    List<String> schoolNumbers,
     String reason,
-    int startAt,
-    int endAt
+    List<Integer> periods
 ){}
