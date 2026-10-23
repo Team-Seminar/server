@@ -12,10 +12,14 @@ import java.util.List;
 @RequestMapping("/api/v1/classrooms")
 public class ClassroomController {
     final private ClassroomService classroomService;
+
+    //교실 정보 상세 조회
     @GetMapping("/{id}")
     public ResponseDTO<Classroom> classroomGet(@PathVariable Long id){
         return ResponseDTO.<Classroom>success(classroomService.classroomGet(id));
     }
+
+    //교실 전체 조회
     @GetMapping()
     public ResponseDTO<List<Classroom>> classroomGetAll(){
         return ResponseDTO.<List<Classroom>>success(classroomService.classroomGetAll());

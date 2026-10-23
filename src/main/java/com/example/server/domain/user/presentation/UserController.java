@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
+    //본인 정보 조회
     @GetMapping("/me")
     public ResponseDTO<UserDTO> getMe(
             @RequestHeader("Authorization") String token
@@ -24,6 +25,7 @@ public class UserController {
         return ResponseDTO.<UserDTO>success(userService.getMe(token));
     }
 
+    //로그인
     @PostMapping("/login")
     public ResponseDTO<TokensDTO> login(
             @RequestBody UserLoginDTO loginDTO
@@ -31,6 +33,7 @@ public class UserController {
         return ResponseDTO.<TokensDTO>success(userService.login(loginDTO));
     }
 
+    //토큰 리프레쉬
     @PostMapping("/refresh")
     public ResponseDTO<TokensDTO> refresh(
             @RequestBody TokensDTO tokensDTO
@@ -38,6 +41,7 @@ public class UserController {
         return ResponseDTO.<TokensDTO>success(userService.refresh(tokensDTO));
     }
 
+    //회원가입
     @PostMapping("/join")
     @ResponseStatus(HttpStatus.CREATED)
     public void join(

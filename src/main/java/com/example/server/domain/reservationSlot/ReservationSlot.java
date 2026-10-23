@@ -16,6 +16,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(
+        check = @CheckConstraint(name = "check_period", constraint = "period>=1 and period<=10"),
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "uk_reservation_slot_student_period",
@@ -36,7 +37,5 @@ public class ReservationSlot {
     @JoinColumn(name = "student_id")
     Student student;
 
-    @Min(value = 1, message = "교시는 최소 1이상이어야 합니다")
-    @Max(value = 10, message = "교시는 최대 10이하여야 합니다")
     int period;
 }

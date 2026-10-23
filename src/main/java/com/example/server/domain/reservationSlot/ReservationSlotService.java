@@ -22,8 +22,10 @@ public class ReservationSlotService {
     public void createSlot(CreateSlotDTO dto){
         reservationSlotRepository.save(
                 ReservationSlot.builder()
+                        //예약 객체 불러오기
                         .reservation(reservationRepository.findById(dto.reservationId())
                                 .orElseThrow(()->new CustomException(ErrorCode.RESERVATION_NOT_FOUND)))
+                        //학생 객체 불러오기
                         .student(studentRepository.findByUser_LoginId(dto.schoolNumber())
                                 .orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND)))
                         .period(dto.period())

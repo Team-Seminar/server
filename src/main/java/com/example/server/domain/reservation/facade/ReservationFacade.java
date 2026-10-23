@@ -21,10 +21,12 @@ public class ReservationFacade {
     private final StudentService studentService;
     private final TokenManager tokenManager;
 
+    //예약 facade
     public String booking(
             String token,
             BookingDTO dto
     ){
+        //필요 값만 얻어서 활용
         Map<String,String> data = reservationService.reservationCreate(
                 ReservationCreateDTO.builder()
                         .tableId(dto.tableId())
@@ -40,6 +42,7 @@ public class ReservationFacade {
         //학생당 각 교시에 엔티티 생성
         dto.schoolNumbers().forEach((number)->{
             dto.periods().forEach((period)->{
+                //교시별 예약 생성
                 slotService.createSlot(
                         CreateSlotDTO.builder()
                                 .schoolNumber(number)

@@ -25,23 +25,29 @@ public class ReservationService {
     private final ClassroomRepository classroomRepository;
 
     //읽기
+    //상세 조회
     public ReadReservationDTO reservationGet(Long reservationId){
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(()->new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
         return ReadReservationDTO.EntityToDTO(reservation);
     }
+
+    //전체조회
     public List<ReadReservationDTO> reservationGetAll(){
         List<Reservation> reservationList = reservationRepository.findAll();
         return reservationList.stream()
                 .map(ReadReservationDTO::EntityToDTO)
                 .toList();
     }
+
+    //교실기반 전체조회
     public List<ReadReservationDTO> reservationGetAll(Classroom classroom){
         List<Reservation> reservationList = reservationRepository.findAllByClassroom(classroom);
         return reservationList.stream()
                 .map(ReadReservationDTO::EntityToDTO)
                 .toList();
     }
+
     //생성
     @Transactional
     public Map<String,String> reservationCreate(ReservationCreateDTO dto){
@@ -61,7 +67,7 @@ public class ReservationService {
                 )
                 .password(randomCode)
                 .build();
-        //저장 및 랜덤으로 생성한 비밀번호 반환
+        //저장 및 랜덤으로 생성한 비밀번호과 예약id 반환
         reservationRepository.save(reservation);
         return Map.of(
                 "code", randomCode,

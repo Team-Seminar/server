@@ -27,10 +27,12 @@ public class TokenManager {
     private final RefreshTokenRepository refreshTokenRepository;
 
     final static private Long VALID_TIME= 30 * 60 * 1000L; //토큰 허용 시간(30분)
-    final static private Long REFRESH_VALID_TIME= 14*24*60 * 60 * 1000L; //토큰 허용 시간(30분)
+    final static private Long REFRESH_VALID_TIME= 14*24*60 * 60 * 1000L; //토큰 허용 시간(2주)
 
+    //생성자
     public TokenManager(TokenProperty tokenProperty, RefreshTokenRepository refreshTokenRepository){
         this.refreshTokenRepository=refreshTokenRepository;
+        //서명 암호화
         final String SECRET_KEY_STRING = tokenProperty.secretKey(); //보안 키
         if (SECRET_KEY_STRING == null) {
             throw new IllegalStateException("JWT Secret Key가 null입니다. application.yml 설정을 확인하세요.");
@@ -38,6 +40,8 @@ public class TokenManager {
         this.SECRET_KEY=Keys.hmacShaKeyFor(SECRET_KEY_STRING.getBytes(StandardCharsets.UTF_8));
     }
 
+
+    //해싱
     public String sha256Hashing(String refreshToken){
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -48,6 +52,7 @@ public class TokenManager {
         }
     }
 
+    //토큰 생성
     private String generateToken(String id, Long exp , Map<String, Object> tokenContent){
         Date now = new Date();
         Date expirationTime = new Date(now.getTime()+exp);
@@ -62,12 +67,16 @@ public class TokenManager {
                 .signWith(this.SECRET_KEY)
                 .compact();
     }
+
+    //토큰 생성 : 토큰 내용이 없는 경우
     private String generateToken(String id, Long exp){
         return generateToken(id, exp, new HashMap<>());
     }
 
+    //리프레쉬 토큰 생성
     private String refreshTokenCreate(String id){
         String refreshTokenStr = generateToken(id, REFRESH_VALID_TIME);
+        //DB에 저장
         RefreshToken refreshToken = RefreshToken.builder()
                 .subject(id)
                 .refreshToken(sha256Hashing(refreshTokenStr))
@@ -76,21 +85,27 @@ public class TokenManager {
         refreshTokenRepository.save(refreshToken);
         return refreshTokenStr;
     }
+
+    //액세스 토큰 생성
     private String accessTokenCreate(String id, Map<String, Object> tokenContent){
         return generateToken(id, VALID_TIME, tokenContent);
     }
 
+    //액세스와 리프레쉬 토큰 생성 및 TokensDTO로 반환
     public TokensDTO createToken(String id, Map<String, Object> tokenContent){
         return TokensDTO.builder()
                 .accessToken(accessTokenCreate(id, tokenContent))
                 .refreshToken(refreshTokenCreate(id))
                 .build();
     }
+
+    //역할 지정 토큰 생성
     public TokensDTO createToken(String id, String role){
         Map<String, Object> tokenContent=Map.of("role", role);
         return createToken(id, tokenContent);
     }
 
+    //토큰의 내용 복호화
     public Claims getToken(String token){
         try {
             // Bearer 접두사 제거
@@ -112,6 +127,8 @@ public class TokenManager {
             return null;
         }
     }
+
+    //토큰의 subject내용만 반환
     public String getSubject(String token){
         return getToken(token).getSubject();
     }

@@ -8,6 +8,8 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+//redis관련 config
+//호스트와 포트를 환경변수로 설정
 @Configuration
 public class RedisConfig {
 

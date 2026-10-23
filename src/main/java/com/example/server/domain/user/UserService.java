@@ -26,17 +26,22 @@ public class UserService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
 
+    //개인 상세 조회
     public UserDTO getMe(String token){
         User user = userRepository.findById(UUID.fromString(tokenManager.getSubject(token)))
                 .orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND));
         return new UserDTO(user.getLoginId(), user.getRole());
     }
 
+    //회원가입
     @Transactional
     public void join(UserJoinDTO dto, UserRole role) {
+        //확인용 비밀번호와 입력값 동일 여부
         if (!dto.pw().equals(dto.checkPw())) {
             throw new CustomException(ErrorCode.NOT_EQUALS_PASSWORD);
         }
+
+        //DB에 로그인 아이디 중복 불가 제약에 의한 예외처리
         if (userRepository.existsByLoginId(dto.loginId())) {
             throw new CustomException(ErrorCode.IS_USE_NAME);
         }
@@ -49,16 +54,19 @@ public class UserService {
         userRepository.save(user);
     }
 
+    //로그인
     @Transactional
     public TokensDTO login(UserLoginDTO loginDTO) { //틀렸다면 위에서 에러를 던져 반환값까지 못가게 하는 방식
         User user = userRepository.findByLoginId(loginDTO.loginId())
                 .orElseThrow(()->new CustomException(ErrorCode.NOT_ALLOW_LOGIN));
+        //비밀번호 검증
         if(!passwordEncoder.matches(loginDTO.pw(), user.getPw())){
             throw new CustomException(ErrorCode.NOT_ALLOW_LOGIN);
         }
         return tokenManager.createToken(user.getId().toString(), user.getRole().toStr());
     }
 
+    //토큰 리프레쉬
     @Transactional
     public TokensDTO refresh(
             TokensDTO tokensDTO

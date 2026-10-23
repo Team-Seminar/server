@@ -45,22 +45,26 @@ public class ReservationController {
     }
 
     //읽기
+    //상세
     @GetMapping("/{id}")
     public ResponseDTO<ReadReservationDTO> RequestGet(@PathVariable Long id){
         return ResponseDTO.<ReadReservationDTO>success(reservationService.reservationGet(id));
     }
 
+    //교실 기반
     @GetMapping("/{classroomId}")
     public ResponseDTO<List<ReadReservationDTO>> getAllByClassroom (@PathVariable Long classroomId){
         return ResponseDTO.<List<ReadReservationDTO>>success(reservationService.reservationGetAll(classroomService.classroomGet(classroomId)));
     }
 
+    //전체
     @GetMapping()
     public ResponseDTO<List<ReadReservationDTO>> RequestGetAll(){
         return ResponseDTO.<List<ReadReservationDTO>>success(reservationService.reservationGetAll());
     }
 
     //수정
+    //예약 승인&거절 api
     @PreAuthorize("hasAuthority('TEACHER')")
     @PatchMapping("/Status")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -71,6 +75,7 @@ public class ReservationController {
         reservationService.reservationUpdate(id, status);
     }
 
+    //임베디드 교실 이용으로 상태 변경을 위한 api
     @PatchMapping("/{classroomId}/use")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void use(
@@ -81,6 +86,7 @@ public class ReservationController {
     }
 
     //삭제
+    //예약 취소시 실행
     @DeleteMapping()
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void DeleteRequest(@RequestParam Long id){

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class StudentController {
     private final StudentService studentService;
 
+    //학생 회원가입 api
     @PostMapping("/join")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseDTO<String> join(

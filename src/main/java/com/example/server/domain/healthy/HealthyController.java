@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HealthyController {
     private final HealthyService healthyService;
 
+    //서버 건강 여부 확인 api
     @GetMapping
     public String Healthy(){
         return healthyService.Healthy();

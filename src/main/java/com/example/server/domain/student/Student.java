@@ -13,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Getter
 public class Student{
+    //기본키 겸 외래키.
     @Id
     @OneToOne
     @JoinColumn(name = "user_id") //에러뜨지만 잘 돌아감

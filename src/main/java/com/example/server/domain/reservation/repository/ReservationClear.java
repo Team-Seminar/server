@@ -16,6 +16,8 @@ import java.time.LocalDateTime;
 public class ReservationClear {
     private final ReservationRepository reservationRepository;
 
+    //매일 저녁 10시를 기준으로 이전에 생성된 예약 전체 삭제
+    //즉 데이터베이스에는 그날 생성된 엔티티만 존재하게 됨
     @Scheduled(cron = "* * 22 * * *")
     @Transactional
     public void cleanReservation(){

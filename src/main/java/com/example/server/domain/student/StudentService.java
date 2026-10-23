@@ -21,17 +21,21 @@ public class    StudentService {
     private final StudentRepository studentRepository;
     private final UserService userService;
 
+    //회원가입
     @Transactional
     public String join(StudentJoinDTO dto){
-        if (studentRepository.existsBySchoolNumber(dto.schoolNumber())){
+        //학번 중복 예외처리
+        if (studentRepository.existsBySchoolNumber(dto.schoolNumber())) {
             throw new CustomException(ErrorCode.OVERLAP_JOIN_STUDENT);
         }
 
+        //유저 회원가입 진행
         userService.join(
                 new UserJoinDTO(dto.loginId(), dto.pw(), dto.checkPw()),
                 UserRole.STUDENT
         );
 
+        //학생 테이블에 정보 저장
         studentRepository.save(
                 Student.builder()
                         .schoolNumber(dto.schoolNumber())
@@ -44,6 +48,7 @@ public class    StudentService {
         return "학생의 회원가입이 성공하였습니다";
     }
 
+    //유저 상세 조회
     public Student findUser(UUID id){
         return studentRepository.findByUser_Id(id)
                 .orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND));
