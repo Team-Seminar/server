@@ -3,18 +3,20 @@ package com.example.server.domain.student;
 import com.example.server.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 @Entity
-@SuperBuilder
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 public class Student{
-    //기본키 겸 외래키.
     @Id
+    private String id;
+    //외래키.
+    @MapsId
     @OneToOne
     @JoinColumn(name = "user_id") //에러뜨지만 잘 돌아감
     private User user;
