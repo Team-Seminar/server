@@ -26,6 +26,7 @@ public class UserController {
     }
 
     //로그인
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/login")
     public ResponseDTO<TokensDTO> login(
             @RequestBody UserLoginDTO loginDTO
@@ -34,6 +35,7 @@ public class UserController {
     }
 
     //토큰 리프레쉬
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/refresh")
     public ResponseDTO<TokensDTO> refresh(
             @RequestBody TokensDTO tokensDTO
