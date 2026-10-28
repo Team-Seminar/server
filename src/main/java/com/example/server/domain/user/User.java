@@ -18,7 +18,7 @@ public class User {
     //기본키
     @Id
     @Builder.Default
-    final UUID id=UUID.randomUUID();
+    final String id=UUID.randomUUID().toString();
 
     //역할 고정
     //선생님 or 학생
