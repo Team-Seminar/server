@@ -15,6 +15,6 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
 
     //학번 기반 조회
     Optional<Student> findBySchoolNumber(String schoolNumber);
-    //유저 기본키 기반 조회
-    Optional<Student> findByUser_Id(UUID userId);
+
+    Optional<Student> findByUser_Id(String userId);
 }
