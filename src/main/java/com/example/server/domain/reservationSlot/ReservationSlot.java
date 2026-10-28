@@ -3,13 +3,13 @@ package com.example.server.domain.reservationSlot;
 import com.example.server.domain.reservation.Reservation;
 import com.example.server.domain.student.Student;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+
+import java.util.UUID;
 
 @Entity
 @Builder
@@ -25,8 +25,9 @@ import org.hibernate.annotations.OnDeleteAction;
         }
 )
 public class ReservationSlot {
+    @Builder.Default
     @Id
-    Long id;
+    String id = UUID.randomUUID().toString();
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne
