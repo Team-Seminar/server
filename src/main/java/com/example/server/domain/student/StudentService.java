@@ -49,7 +49,7 @@ public class    StudentService {
     }
 
     //유저 상세 조회
-    public Student findUser(UUID id){
+    public Student findUser(String id){
         return studentRepository.findByUser_Id(id)
                 .orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND));
     }
