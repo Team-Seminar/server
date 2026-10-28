@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.MessageDigest;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +27,7 @@ public class UserService {
 
     //개인 상세 조회
     public UserDTO getMe(String token){
-        User user = userRepository.findById(UUID.fromString(tokenManager.getSubject(token)))
+        User user = userRepository.findById(tokenManager.getSubject(token))
                 .orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND));
         return new UserDTO(user.getLoginId(), user.getRole());
     }
@@ -63,7 +62,7 @@ public class UserService {
         if(!passwordEncoder.matches(loginDTO.pw(), user.getPw())){
             throw new CustomException(ErrorCode.NOT_ALLOW_LOGIN);
         }
-        return tokenManager.createToken(user.getId().toString(), user.getRole().toStr());
+        return tokenManager.createToken(user.getId(), user.getRole().toStr());
     }
 
     //토큰 리프레쉬
@@ -75,7 +74,7 @@ public class UserService {
         String sub = tokenManager.getSubject(refreshToken);
         RefreshToken hashRefreshToken = refreshTokenRepository.findById(sub)
                 .orElseThrow(()->new CustomException(ErrorCode.TOKEN_NOT_FOUND));
-        User user = userRepository.findById(UUID.fromString(sub)).orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND));
+        User user = userRepository.findById(sub).orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND));
 
         //서버 refresh토큰과 입력된 refresh토큰의 동일 여부 검증
         if (!MessageDigest.isEqual(
@@ -85,10 +84,10 @@ public class UserService {
             throw new CustomException(ErrorCode.TOKEN_FORGERY);
         }
         //access토큰과 refresh토큰의 subject 동일 여부 검증
-        if (!user.getId().equals(UUID.fromString(tokenManager.getSubject(tokensDTO.accessToken())))){
+        if (!user.getId().equals(tokenManager.getSubject(tokensDTO.accessToken()))){
             throw new CustomException(ErrorCode.TOKEN_FORGERY);
         }
         refreshTokenRepository.delete(hashRefreshToken);
-        return tokenManager.createToken(user.getId().toString(), user.getRole().toStr());
+        return tokenManager.createToken(user.getId(), user.getRole().toStr());
     }
 }
