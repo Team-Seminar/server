@@ -2,7 +2,6 @@ package com.example.server.domain.reservation;
 
 import com.example.server.domain.reservation.facade.dto.ReservationCreateDTO;
 import com.example.server.domain.reservation.presentation.dto.ReadReservationDTO;
-import com.example.server.domain.reservation.presentation.dto.BookingDTO;
 import com.example.server.domain.reservation.presentation.dto.ReservationUseDTO;
 import com.example.server.domain.classroom.Classroom;
 import com.example.server.domain.classroom.ClassroomRepository;
@@ -62,7 +61,7 @@ public class ReservationService {
         Reservation reservation = Reservation.builder()
                 .reason(dto.reason())
                 .classroom(
-                        classroomRepository.findById(dto.tableId())
+                        classroomRepository.findById(dto.classroomId())
                                 .orElseThrow(()->new CustomException(ErrorCode.CLASS_NOT_FOUND))
                 )
                 .password(randomCode)

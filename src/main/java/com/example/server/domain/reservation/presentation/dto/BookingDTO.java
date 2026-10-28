@@ -4,7 +4,7 @@ import java.util.List;
 
 //request body 를 위한 dto
 public record BookingDTO(
-    Long tableId,
+    Long classroomId,
     List<String> schoolNumbers,
     String reason,
     List<Integer> periods

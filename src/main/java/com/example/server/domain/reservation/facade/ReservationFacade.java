@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -29,7 +28,7 @@ public class ReservationFacade {
         //필요 값만 얻어서 활용
         Map<String,String> data = reservationService.reservationCreate(
                 ReservationCreateDTO.builder()
-                        .tableId(dto.tableId())
+                        .classroomId(dto.classroomId())
                         .reason(dto.reason())
                         .build()
         );
@@ -38,7 +37,7 @@ public class ReservationFacade {
         long reservationId = Long.parseLong(data.get("id"));
 
         //예약자의 학번을 추가
-        dto.schoolNumbers().add(studentService.findUser(UUID.fromString(tokenManager.getSubject(token))).getSchoolNumber());
+        dto.schoolNumbers().add(studentService.findUser(tokenManager.getSubject(token)).getSchoolNumber());
         //학생당 각 교시에 엔티티 생성
         dto.schoolNumbers().forEach((number)->{
             dto.periods().forEach((period)->{
