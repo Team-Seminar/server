@@ -5,9 +5,9 @@ import com.example.server.global.security.JWT.refreshToken.RefreshToken;
 import com.example.server.global.security.JWT.refreshToken.RefreshTokenRepository;
 import com.example.server.global.error.exception.CustomException;
 import com.example.server.global.error.exception.ErrorCode;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.security.crypto.codec.Hex;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +28,21 @@ public class TokenManager {
 
     final static private Long VALID_TIME= 30 * 60 * 1000L; //토큰 허용 시간(30분)
     final static private Long REFRESH_VALID_TIME= 14*24*60 * 60 * 1000L; //토큰 허용 시간(2주)
+
+    public void handleTokenException(Exception e) {
+        if (e instanceof SecurityException || e instanceof SignatureException) {
+            throw new CustomException(ErrorCode.TOKEN_INVALID);
+        } else if (e instanceof ExpiredJwtException) {
+            throw new CustomException(ErrorCode.TOKEN_EXPIRATION);
+        } else if (e instanceof MalformedJwtException) {
+            throw new CustomException(ErrorCode.TOKEN_DAMAGED);
+        } else if (e instanceof UnsupportedJwtException) {
+            throw new CustomException(ErrorCode.TOKEN_BAD_REQUEST);
+        } else if (e instanceof IllegalArgumentException) {
+            throw new CustomException(ErrorCode.TOKEN_NOT_FOUND);
+        }
+        throw new CustomException(ErrorCode.TOKEN_FAIL);
+    }
 
     //생성자
     public TokenManager(TokenProperty tokenProperty, RefreshTokenRepository refreshTokenRepository){
@@ -123,7 +138,7 @@ public class TokenManager {
                     .getPayload(); //토큰에서 페이로드만 반환
 
         } catch (Exception e) {
-            // 토큰 만료, 서명 불일치, 올바르지 않은 구조 등 모든 검증 실패 시 null 반환
+            handleTokenException(e);
             return null;
         }
     }

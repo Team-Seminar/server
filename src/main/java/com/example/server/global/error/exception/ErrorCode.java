@@ -6,8 +6,13 @@ import org.springframework.http.HttpStatus;
 
 @AllArgsConstructor
 @Getter
-public enum ErrorCode {
+public enum  ErrorCode {
     //토큰 관련 에러
+    TOKEN_FAIL("토큰 인증 실패", HttpStatus.UNAUTHORIZED),
+    TOKEN_BAD_REQUEST("지원되지 않는 토큰 형식", HttpStatus.UNAUTHORIZED),
+    TOKEN_DAMAGED("손상된 토큰", HttpStatus.UNAUTHORIZED),
+    TOKEN_INVALID("유효하지 않은 JWT 서명", HttpStatus.UNAUTHORIZED),
+    TOKEN_EXPIRATION("만료된 토큰",HttpStatus.UNAUTHORIZED),
     TOKEN_NOT_FOUND("토큰이 존재하지 않음", HttpStatus.UNAUTHORIZED),
     TOKEN_FORGERY("토큰 위조", HttpStatus.UNAUTHORIZED),
 
