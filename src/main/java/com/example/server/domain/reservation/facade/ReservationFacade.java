@@ -40,16 +40,14 @@ public class ReservationFacade {
         dto.schoolNumbers().add(studentService.findUser(tokenManager.getSubject(token)).getSchoolNumber());
         //학생당 각 교시에 엔티티 생성
         dto.schoolNumbers().forEach((number)->{
-            dto.periods().forEach((period)->{
-                //교시별 예약 생성
-                slotService.createSlot(
-                        CreateSlotDTO.builder()
-                                .schoolNumber(number)
-                                .reservationId(reservationId)
-                                .period(period)
-                                .build()
-                );
-            });
+            //교시별 예약 생성
+            slotService.createSlot(
+                    CreateSlotDTO.builder()
+                            .schoolNumber(number)
+                            .reservationId(reservationId)
+                            .period(dto.periods())
+                            .build()
+            );
         });
 
         return code;
