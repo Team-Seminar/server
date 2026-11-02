@@ -29,7 +29,7 @@ public class ReservationFacade {
             String token,
             BookingDTO dto
     ){
-        if(dto.schoolNumbers().isEmpty()){
+        if(dto.periods().isEmpty()){
             throw new CustomException(ErrorCode.IS_EMPTY_PERIOD);
         }
 
