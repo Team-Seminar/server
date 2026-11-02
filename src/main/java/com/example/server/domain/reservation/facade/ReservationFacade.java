@@ -39,7 +39,11 @@ public class ReservationFacade {
         long reservationId = Long.parseLong(data.get("id"));
 
         //예약자의 학번을 추가
-        dto.schoolNumbers().add(studentService.findUser(tokenManager.getSubject(token)).getSchoolNumber());
+        String userSchoolNumber = studentService.findUser(tokenManager.getSubject(token)).getSchoolNumber();
+        if (dto.schoolNumbers().contains(userSchoolNumber)) {
+            dto.schoolNumbers().add(userSchoolNumber);
+        }
+
         //학생당 각 교시에 엔티티 생성
         dto.schoolNumbers().forEach((number)->{
             //교시별 예약 생성
