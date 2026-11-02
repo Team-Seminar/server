@@ -65,7 +65,7 @@ public class ReservationController {
 
     //수정
     //예약 승인&거절 api
-    @PreAuthorize("hasAuthority('TEACHER')")
+    @PreAuthorize("hasRole('TEACHER')")
     @PatchMapping("/Status")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void UpdateStatus(
