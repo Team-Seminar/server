@@ -87,9 +87,9 @@ public class ReservationController {
 
     //삭제
     //예약 취소시 실행
-    @DeleteMapping()
+    @DeleteMapping("/{reservationId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void DeleteRequest(@RequestParam Long id){
-        reservationService.reservationDelete(id);
+    public void DeleteRequest(@PathVariable Long reservationId){
+        reservationService.reservationDelete(reservationId);
     }
 }
