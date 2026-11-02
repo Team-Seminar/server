@@ -6,6 +6,8 @@ import com.example.server.domain.reservation.facade.dto.BookingDTO;
 import com.example.server.domain.reservationSlot.ReservationSlotService;
 import com.example.server.domain.reservationSlot.presentation.dto.CreateSlotDTO;
 import com.example.server.domain.student.StudentService;
+import com.example.server.global.error.exception.CustomException;
+import com.example.server.global.error.exception.ErrorCode;
 import com.example.server.global.security.JWT.TokenManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -27,6 +29,10 @@ public class ReservationFacade {
             String token,
             BookingDTO dto
     ){
+        if(dto.schoolNumbers().isEmpty()){
+            throw new CustomException(ErrorCode.IS_EMPTY_PERIOD);
+        }
+
         //필요 값만 얻어서 활용
         Map<String,String> data = reservationService.reservationCreate(
                 ReservationCreateDTO.builder()

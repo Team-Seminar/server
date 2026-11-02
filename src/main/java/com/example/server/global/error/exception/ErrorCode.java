@@ -23,6 +23,7 @@ public enum  ErrorCode {
     CLASS_NOT_FOUND("해당 교실 없음", HttpStatus.NOT_FOUND),
 
     //예약 관련 에러
+    IS_EMPTY_PERIOD("요청에 시간이 설정이 없음", HttpStatus.CONFLICT),
     IS_NOT_ALLOW("허용된 예약이 아님", HttpStatus.CONFLICT),
     IS_TIME_NOT("예약 가능 시간이 아님", HttpStatus.CONFLICT),
     NOT_ABLE_RESERVATION("예약 불가", HttpStatus.CONFLICT),
