@@ -116,7 +116,7 @@ public class TokenManager {
 
     //역할 지정 토큰 생성
     public TokensDTO createToken(String id, String role){
-        Map<String, Object> tokenContent=Map.of("role", role);
+        Map<String, Object> tokenContent=Map.of("role", List.of(role));
         return createToken(id, tokenContent);
     }
 
