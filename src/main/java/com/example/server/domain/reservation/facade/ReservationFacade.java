@@ -9,6 +9,7 @@ import com.example.server.domain.student.StudentService;
 import com.example.server.global.security.JWT.TokenManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
@@ -21,6 +22,7 @@ public class ReservationFacade {
     private final TokenManager tokenManager;
 
     //예약 facade
+    @Transactional
     public String booking(
             String token,
             BookingDTO dto
