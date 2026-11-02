@@ -30,19 +30,6 @@ services:
       - mysql_data:/var/lib/mysql         # 데이터 보존을 위한 볼륨 매핑
       # - ./init:/docker-entrypoint-initdb.d  # 초기 .sql 스크립트 실행 시 사용 (필요시 주석 해제)
 
-  # (선택 사항) 웹 UI DB 관리 도구 (phpMyAdmin)
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
-    restart: always
-    ports:
-      - "8081:80"
-    environment:
-      PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}
-    depends_on:
-      - db
-
 volumes:
   redis_data:
   mysql_data:
