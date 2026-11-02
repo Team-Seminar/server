@@ -2,7 +2,7 @@ package com.example.server.domain.reservation.presentation;
 
 import com.example.server.domain.reservation.facade.ReservationFacade;
 import com.example.server.domain.reservation.presentation.dto.ReadReservationDTO;
-import com.example.server.domain.reservation.presentation.dto.BookingDTO;
+import com.example.server.domain.reservation.facade.dto.BookingDTO;
 import com.example.server.domain.reservation.presentation.dto.ReservationUseDTO;
 import com.example.server.global.common.dto.ResponseDTO;
 import com.example.server.domain.classroom.ClassroomService;

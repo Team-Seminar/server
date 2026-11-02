@@ -1,4 +1,4 @@
-package com.example.server.domain.reservation.presentation.dto;
+package com.example.server.domain.reservation.facade.dto;
 
 import java.util.List;
 

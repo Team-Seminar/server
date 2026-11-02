@@ -1,8 +1,8 @@
 package com.example.server.domain.reservation.facade;
 
 import com.example.server.domain.reservation.ReservationService;
-import com.example.server.domain.reservation.facade.dto.ReservationCreateDTO;
-import com.example.server.domain.reservation.presentation.dto.BookingDTO;
+import com.example.server.domain.reservation.presentation.dto.ReservationCreateDTO;
+import com.example.server.domain.reservation.facade.dto.BookingDTO;
 import com.example.server.domain.reservationSlot.ReservationSlotService;
 import com.example.server.domain.reservationSlot.presentation.dto.CreateSlotDTO;
 import com.example.server.domain.student.StudentService;
