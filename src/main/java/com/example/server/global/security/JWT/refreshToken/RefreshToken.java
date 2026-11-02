@@ -20,5 +20,5 @@ public class RefreshToken {
 
     @TimeToLive
     @Builder.Default
-    private Long expiration = 60L*60*24*7;
+    private Long expiration = 60L*60*24*14; //이주일
 }
