@@ -46,7 +46,7 @@ public class ReservationFacade {
 
         //예약자의 학번을 추가
         String userSchoolNumber = studentService.findUser(tokenManager.getSubject(token)).getSchoolNumber();
-        if (dto.schoolNumbers().contains(userSchoolNumber)) {
+        if (!dto.schoolNumbers().contains(userSchoolNumber)) {
             dto.schoolNumbers().add(userSchoolNumber);
         }
 
