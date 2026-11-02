@@ -161,6 +161,9 @@ public class TokenManager {
 
         } catch (ExpiredJwtException e) {
             return e.getClaims();
+        } catch (Exception e) {
+            handleTokenException(e);
+            return null;
         }
     }
 
