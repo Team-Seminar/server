@@ -7,9 +7,9 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ReservationSlotRepository extends JpaRepository<ReservationSlot, Long> {
+public interface ReservationSlotRepository extends JpaRepository<ReservationSlot, String> {
 
     //예약에 포함된 학생 반환
     @Query("SELECT DISTINCT r.student FROM ReservationSlot r WHERE r.reservation.id = :reservationId")
-    List<Student> findDistinctStudentsByReservationId(@Param("reservation") Long reservationId);
+    List<Student> findDistinctStudentsByReservationId(@Param("reservation") String reservationId);
 }
