@@ -84,9 +84,11 @@ public class UserService {
             throw new CustomException(ErrorCode.TOKEN_FORGERY);
         }
         //access토큰과 refresh토큰의 subject 동일 여부 검증
-        if (!user.getId().equals(tokenManager.getSubject(tokensDTO.accessToken()))){
+        String accessTokenSub=tokenManager.getTokenPassExpiredJwt(tokensDTO.accessToken()).getSubject();
+        if (!user.getId().equals(accessTokenSub)){
             throw new CustomException(ErrorCode.TOKEN_FORGERY);
         }
+
         refreshTokenRepository.delete(hashRefreshToken);
         return tokenManager.createToken(user.getId(), user.getRole().toStr());
     }

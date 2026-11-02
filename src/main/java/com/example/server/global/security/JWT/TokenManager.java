@@ -142,6 +142,27 @@ public class TokenManager {
             return null;
         }
     }
+    //만료된 토큰의 내용 복호화
+    public Claims getTokenPassExpiredJwt(String token) {
+        try {
+            // Bearer 접두사 제거
+            if (token != null && token.startsWith("Bearer ")) {
+                token = token.substring(7);
+            }
+
+            // 토큰 서명을 검증하고 내부 데이터(Claims)를 파싱
+            // 만료되었거나 누군가 1글자라도 위조했다면 예외(Exception)가 발생.
+            return Jwts.parser()
+                    //해독기 객체 생성
+                    .verifyWith(SECRET_KEY)
+                    .build()
+                    .parseSignedClaims(token) //서명 및 만료기간 인증. 데이터 복호화
+                    .getPayload(); //토큰에서 페이로드만 반환
+
+        } catch (ExpiredJwtException e) {
+            return e.getClaims();
+        }
+    }
 
     //토큰의 subject내용만 반환
     public String getSubject(String token){
