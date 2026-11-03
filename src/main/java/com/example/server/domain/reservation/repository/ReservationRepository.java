@@ -22,7 +22,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     //교실, 비밀번호, 상태를 기반으로 조회
     //임베디드 교실 사용으로 상태 변경을 위해 사용
-    Optional<Reservation> findByClassroomAndPasswordAndStatus(Classroom classroom, String password, ReservationStatus status);
+    Optional<Reservation> findByClassroomAndPassword(Classroom classroom, String password);
 
     //생성일자 이전 전체 삭제 및 개수 반환
     long deleteAllByCreateAtBefore(LocalDateTime createAtBefore);

@@ -28,6 +28,7 @@ public enum  ErrorCode {
     IS_TIME_NOT("예약 가능 시간이 아님", HttpStatus.CONFLICT),
     NOT_ABLE_RESERVATION("예약 불가", HttpStatus.CONFLICT),
     RESERVATION_NOT_FOUND("해당 예약 없음", HttpStatus.NOT_FOUND),
+    RESERVATION_NOT_ALLOW("승인되지 않은 사용", HttpStatus.CONFLICT),
 
     //auth 관련 에러
     OVERLAP_JOIN_STUDENT("학생 중복 회원가입 불가", HttpStatus.CONFLICT),
