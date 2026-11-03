@@ -66,10 +66,10 @@ public class ReservationController {
     //수정
     //예약 승인&거절 api
     @PreAuthorize("hasRole('TEACHER')")
-    @PatchMapping("/Status")
+    @PatchMapping("/{classroomId}/Status")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void UpdateStatus(
-            @RequestParam Long id,
+            @PathVariable Long id,
             @RequestParam ReservationStatus status
     ){
         reservationService.reservationUpdate(id, status);
