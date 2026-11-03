@@ -66,13 +66,13 @@ public class ReservationController {
     //수정
     //예약 승인&거절 api
     @PreAuthorize("hasRole('TEACHER')")
-    @PatchMapping("/{classroomId}/Status")
+    @PatchMapping("/{classroomId}/{status}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void UpdateStatus(
-            @PathVariable Long id,
-            @RequestParam ReservationStatus status
+            @PathVariable Long classroomId,
+            @PathVariable ReservationStatus status
     ){
-        reservationService.reservationUpdate(id, status);
+        reservationService.reservationUpdate(classroomId, status);
     }
 
     //임베디드 교실 이용으로 상태 변경을 위한 api
