@@ -30,6 +30,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().permitAll()
+                        .requestMatchers("/api/v1/users/join").denyAll()
                 );
 
         return http.build();
