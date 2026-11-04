@@ -29,8 +29,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // API 서버라면 보통 disable
 
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()
                         .requestMatchers("/api/v1/users/join").denyAll()
+                        .anyRequest().permitAll()
                 );
 
         return http.build();

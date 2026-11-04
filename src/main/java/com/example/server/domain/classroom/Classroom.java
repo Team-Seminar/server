@@ -19,7 +19,6 @@ public class Classroom {
 
     //기본키
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     //교실 이름

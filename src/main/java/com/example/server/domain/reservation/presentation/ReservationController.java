@@ -51,16 +51,10 @@ public class ReservationController {
         return ResponseDTO.<ReadReservationDTO>success(reservationService.reservationGet(id));
     }
 
-    //교실 기반
-    @GetMapping("/{classroomId}")
-    public ResponseDTO<List<ReadReservationDTO>> getAllByClassroom (@PathVariable Long classroomId){
-        return ResponseDTO.<List<ReadReservationDTO>>success(reservationService.reservationGetAll(classroomService.classroomGet(classroomId)));
-    }
-
     //전체
     @GetMapping()
-    public ResponseDTO<List<ReadReservationDTO>> RequestGetAll(){
-        return ResponseDTO.<List<ReadReservationDTO>>success(reservationService.reservationGetAll());
+    public ResponseDTO<List<ReadReservationDTO>> RequestGetAll(@RequestParam(required = false) String classroomId){
+        return ResponseDTO.<List<ReadReservationDTO>>success(reservationService.reservationGetAll(classroomId));
     }
 
     //수정

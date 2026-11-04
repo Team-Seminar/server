@@ -5,6 +5,7 @@ import com.example.server.domain.reservation.presentation.dto.ReadReservationDTO
 import com.example.server.domain.reservation.presentation.dto.ReservationUseDTO;
 import com.example.server.domain.classroom.Classroom;
 import com.example.server.domain.classroom.ClassroomRepository;
+import com.example.server.domain.reservationSlot.ReservationSlotRepository;
 import com.example.server.global.error.exception.CustomException;
 import com.example.server.global.error.exception.ErrorCode;
 import com.example.server.domain.reservation.repository.ReservationRepository;
@@ -22,29 +23,32 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ReservationService {
     final private ReservationRepository reservationRepository;
     private final ClassroomRepository classroomRepository;
+    private final ReservationSlotRepository slotRepository;
 
     //읽기
     //상세 조회
     public ReadReservationDTO reservationGet(Long reservationId){
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(()->new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
-        return ReadReservationDTO.EntityToDTO(reservation);
+        return ReadReservationDTO.EntityToDTO(reservation, slotRepository.findPeriodsByReservation_Id(reservationId));
     }
 
     //전체조회
-    public List<ReadReservationDTO> reservationGetAll(){
-        List<Reservation> reservationList = reservationRepository.findAll();
-        return reservationList.stream()
-                .map(ReadReservationDTO::EntityToDTO)
-                .toList();
-    }
-
-    //교실기반 전체조회
-    public List<ReadReservationDTO> reservationGetAll(Classroom classroom){
-        List<Reservation> reservationList = reservationRepository.findAllByClassroom(classroom);
-        return reservationList.stream()
-                .map(ReadReservationDTO::EntityToDTO)
-                .toList();
+    public List<ReadReservationDTO> reservationGetAll(String classroomId){
+        if (classroomId==null||classroomId.isEmpty()){
+            return reservationRepository.findAll().stream()
+                    .map(reservation -> ReadReservationDTO.EntityToDTO(
+                            reservation,
+                            slotRepository.findPeriodsByReservation_Id(reservation.getId())
+                    ))
+                    .toList();
+        }
+        return reservationRepository.findAllByClassroom_Id(Long.valueOf(classroomId)).stream()
+                    .map(reservation -> ReadReservationDTO.EntityToDTO(
+                            reservation,
+                            slotRepository.findPeriodsByReservation_Id(reservation.getId())
+                    ))
+                    .toList();
     }
 
     //생성

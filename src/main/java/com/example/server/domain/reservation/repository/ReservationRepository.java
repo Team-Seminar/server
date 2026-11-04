@@ -14,8 +14,7 @@ import java.util.Optional;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
-    //교실 기반 예약 조회
-    List<Reservation> findAllByClassroom(Classroom classroom);
+    List<Reservation> findAllByClassroom_Id(Long classroomId);
 
     //비밀번호 중복 여부
     boolean existsByPassword(String password);
