@@ -1,6 +1,5 @@
 package com.example.server.domain.user;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
