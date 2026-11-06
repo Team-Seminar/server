@@ -18,5 +18,5 @@ public interface ReservationSlotRepository extends JpaRepository<ReservationSlot
 
     //예약에 포함된 학생 반환
     @Query("SELECT DISTINCT r.student FROM ReservationSlot r WHERE r.reservation.id = :reservationId")
-    List<Student> findDistinctStudentsByReservationId(@Param("reservation") String reservationId);
+    List<Student> findDistinctStudentsByReservationId(@Param("reservationId") String reservationId);
 }
