@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
@@ -24,6 +26,8 @@ public class ReservationService {
     final private ReservationRepository reservationRepository;
     private final ClassroomRepository classroomRepository;
     private final ReservationSlotRepository slotRepository;
+
+    private final Clock clock;
 
     //읽기
     //상세 조회
@@ -63,6 +67,7 @@ public class ReservationService {
         }
         //예약 생성
         Reservation reservation = Reservation.builder()
+                .createAt(LocalDateTime.now(clock))
                 .reason(dto.reason())
                 .classroom(
                         classroomRepository.findById(dto.classroomId())

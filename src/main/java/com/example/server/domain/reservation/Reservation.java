@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import com.example.server.global.config.TimeConfig;
 
 @Entity
 @Getter
@@ -41,5 +43,5 @@ public class Reservation {
     //생성날자
     @Column(nullable = false)
     @Builder.Default
-    private LocalDateTime createAt=LocalDateTime.now();
+    private LocalDateTime createAt=LocalDateTime.now(ZoneId.of(TimeConfig.ZONE));
 }

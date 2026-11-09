@@ -9,6 +9,10 @@ import java.util.List;
 
 public interface ReservationSlotRepository extends JpaRepository<ReservationSlot, String> {
 
+    boolean existsByReservation_IdAndStudent_User_Id(Long reservationId, String userId);
+
+    boolean existsByStudentAndPeriodIn(Student student, List<Integer> periods);
+
     @Query("""
         SELECT rp.period
         FROM ReservationSlot rp

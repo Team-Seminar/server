@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashSet;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +32,12 @@ public class ReservationSlotService {
                 .orElseThrow(()->new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
         Student student = studentRepository.findBySchoolNumber(dto.schoolNumber())
                 .orElseThrow(()->new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        // REFUSE reservations continue to occupy slots until deleted, matching the unique key.
+        if (new HashSet<>(dto.period()).size() != dto.period().size()
+                || reservationSlotRepository.existsByStudentAndPeriodIn(student, dto.period())) {
+            throw new CustomException(ErrorCode.NOT_ABLE_RESERVATION);
+        }
 
         dto.period().forEach((period)->{
             ReservationSlot slot = ReservationSlot.builder()

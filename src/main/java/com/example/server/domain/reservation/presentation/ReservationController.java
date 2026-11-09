@@ -16,6 +16,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalTime;
+import java.time.Clock;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import com.example.server.domain.reservationSlot.ReservationSlotRepository;
 import java.util.List;
 
 @RestController
@@ -25,6 +29,8 @@ public class ReservationController {
     final private ReservationService reservationService;
     private final ReservationFacade reservationFacade;
     final private ClassroomService classroomService;
+    private final Clock clock;
+    private final ReservationSlotRepository slotRepository;
     //생성
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
@@ -32,7 +38,7 @@ public class ReservationController {
             @RequestHeader("Authorization") String token,
             @RequestBody BookingDTO dto
     ){
-        LocalTime nowTime=LocalTime.now();
+        LocalTime nowTime=LocalTime.now(clock);
         if (
                 nowTime.isAfter(LocalTime.of(8,0)) &&
                 nowTime.isBefore(LocalTime.of(16,20))
@@ -83,7 +89,19 @@ public class ReservationController {
     //예약 취소시 실행
     @DeleteMapping("/{reservationId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void DeleteRequest(@PathVariable Long reservationId){
+    public void DeleteRequest(@PathVariable Long reservationId, Authentication authentication){
+        if (authentication == null || !authentication.isAuthenticated()
+                || authentication instanceof AnonymousAuthenticationToken) {
+            throw new CustomException(ErrorCode.NOT_ABLE_STUDENT);
+        }
+        boolean teacher = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_TEACHER"));
+        boolean student = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_STUDENT"));
+        if (!teacher && !(student && slotRepository.existsByReservation_IdAndStudent_User_Id(
+                reservationId, authentication.getName()))) {
+            throw new CustomException(ErrorCode.NOT_ABLE_STUDENT);
+        }
         reservationService.reservationDelete(reservationId);
     }
 }

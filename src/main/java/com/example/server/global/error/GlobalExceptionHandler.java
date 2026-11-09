@@ -3,6 +3,8 @@ package com.example.server.global.error;
 import com.example.server.global.common.dto.ResponseDTO;
 import com.example.server.global.error.exception.CustomException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
+import com.example.server.global.error.exception.ErrorCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -12,6 +14,12 @@ import java.util.Map;
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ResponseDTO<Map<String, ?>>> handleIntegrityConflict(DataIntegrityViolationException e) {
+        return ResponseDTO.error(ErrorCode.DATA_CONFLICT.getMessage(),
+                ErrorCode.DATA_CONFLICT.getStatus());
+    }
+
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ResponseDTO<Map<String, ?>>> handleLoginFalse(CustomException e){
         return ResponseDTO.error(e.getCode().getMessage(), e.getCode().getStatus());

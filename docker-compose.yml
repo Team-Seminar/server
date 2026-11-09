@@ -4,8 +4,10 @@ services:
     container_name: redis-server
     restart: always
     ports:
-      - "6379:6379"
-    command: redis-server --requirepass ${REDIS_PASSWORD}
+      - "127.0.0.1:6379:6379"
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?REDIS_PASSWORD is required}
+    command: ["/bin/sh", "-c", 'exec redis-server --requirepass "$$REDIS_PASSWORD"']
     volumes:
       - redis_data:/data
 
@@ -16,11 +18,23 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}   # root 계정 비밀번호 (필수)
       MYSQL_DATABASE: mydb    # 데이터베이스 이름 (선택)
-      MYSQL_USER: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       MYSQL_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
       TZ: Asia/Seoul                     # 타임존 설정
     ports:
       - "3307:3307"                       # 외부접속포트:컨테이너포트
+    # The official image rejects MYSQL_USER=root; root uses MYSQL_ROOT_PASSWORD.
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        if [ "$$SPRING_DATASOURCE_USERNAME" != "root" ]; then
+          export MYSQL_USER="$$SPRING_DATASOURCE_USERNAME"
+        else
+          unset MYSQL_USER
+        fi
+        exec /usr/local/bin/docker-entrypoint.sh "$$@"
+      - --
     command:
       --port=3307
       --default-authentication-plugin=mysql_native_password

@@ -16,6 +16,8 @@ public enum  ErrorCode {
     TOKEN_NOT_FOUND("토큰이 존재하지 않음", HttpStatus.UNAUTHORIZED),
     TOKEN_FORGERY("토큰 위조", HttpStatus.UNAUTHORIZED),
 
+    DATA_CONFLICT("데이터 제약 조건 충돌", HttpStatus.CONFLICT),
+
     //기타
     NOT_FOUND_WAY("해당 방법을 찾을 수 없음",HttpStatus.INTERNAL_SERVER_ERROR),
 
