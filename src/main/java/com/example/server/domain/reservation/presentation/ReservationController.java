@@ -53,7 +53,7 @@ public class ReservationController {
 
     //전체
     @GetMapping()
-    public ResponseDTO<List<ReadReservationDTO>> RequestGetAll(@RequestParam(required = false) String classroomId){
+    public ResponseDTO<List<ReadReservationDTO>> RequestGetAll(@RequestParam(required = false) Long classroomId){
         return ResponseDTO.<List<ReadReservationDTO>>success(reservationService.reservationGetAll(classroomId));
     }
 

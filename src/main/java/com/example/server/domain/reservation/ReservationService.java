@@ -34,8 +34,8 @@ public class ReservationService {
     }
 
     //전체조회
-    public List<ReadReservationDTO> reservationGetAll(String classroomId){
-        if (classroomId==null||classroomId.isEmpty()){
+    public List<ReadReservationDTO> reservationGetAll(Long classroomId){
+        if (classroomId==null||classroomId<0){
             return reservationRepository.findAll().stream()
                     .map(reservation -> ReadReservationDTO.EntityToDTO(
                             reservation,
@@ -43,7 +43,7 @@ public class ReservationService {
                     ))
                     .toList();
         }
-        return reservationRepository.findAllByClassroom_Id(Long.valueOf(classroomId)).stream()
+        return reservationRepository.findAllByClassroom_Id(classroomId).stream()
                     .map(reservation -> ReadReservationDTO.EntityToDTO(
                             reservation,
                             slotRepository.findPeriodsByReservation_Id(reservation.getId())
