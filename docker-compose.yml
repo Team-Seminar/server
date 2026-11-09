@@ -1,0 +1,49 @@
+services:
+  redis:
+    image: redis:7.4-alpine
+    container_name: redis-server
+    restart: always
+    ports:
+      - ${REDIS_CONTAINER_PORT}
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?REDIS_PASSWORD is required}
+    command: ["/bin/sh", "-c", 'exec redis-server --requirepass "$$REDIS_PASSWORD"']
+    volumes:
+      - redis_data:/data
+
+  db:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}   # root 계정 비밀번호 (필수)
+      MYSQL_DATABASE: mydb    # 데이터베이스 이름 (선택)
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      MYSQL_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      TZ: Asia/Seoul                     # 타임존 설정
+    ports:
+      - "3307:3307"                       # 외부접속포트:컨테이너포트
+    # The official image rejects MYSQL_USER=root; root uses MYSQL_ROOT_PASSWORD.
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        if [ "$$SPRING_DATASOURCE_USERNAME" != "root" ]; then
+          export MYSQL_USER="$$SPRING_DATASOURCE_USERNAME"
+        else
+          unset MYSQL_USER
+        fi
+        exec /usr/local/bin/docker-entrypoint.sh "$$@"
+      - --
+    command:
+      --port=3307
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - mysql_data:/var/lib/mysql         # 데이터 보존을 위한 볼륨 매핑
+      # - ./init:/docker-entrypoint-initdb.d  # 초기 .sql 스크립트 실행 시 사용 (필요시 주석 해제)
+
+volumes:
+  redis_data:
+  mysql_data:
