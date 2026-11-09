@@ -4,7 +4,7 @@ services:
     container_name: redis-server
     restart: always
     ports:
-      - "127.0.0.1:6379:6379"
+      - ${REDIS_CONTAINER_PORT}
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD:?REDIS_PASSWORD is required}
     command: ["/bin/sh", "-c", 'exec redis-server --requirepass "$$REDIS_PASSWORD"']
