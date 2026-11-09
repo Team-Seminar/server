@@ -5,7 +5,6 @@ import com.example.server.domain.reservation.presentation.dto.ReadReservationDTO
 import com.example.server.domain.reservation.facade.dto.BookingDTO;
 import com.example.server.domain.reservation.presentation.dto.ReservationUseDTO;
 import com.example.server.global.common.dto.ResponseDTO;
-import com.example.server.domain.classroom.ClassroomService;
 import com.example.server.global.error.exception.CustomException;
 import com.example.server.global.error.exception.ErrorCode;
 import com.example.server.domain.reservation.ReservationService;
@@ -16,10 +15,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalTime;
-import java.time.Clock;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import com.example.server.domain.reservationSlot.ReservationSlotRepository;
 import java.util.List;
 
 @RestController
@@ -28,9 +23,6 @@ import java.util.List;
 public class ReservationController {
     final private ReservationService reservationService;
     private final ReservationFacade reservationFacade;
-    final private ClassroomService classroomService;
-    private final Clock clock;
-    private final ReservationSlotRepository slotRepository;
 
     //생성
     @PostMapping()
@@ -90,19 +82,10 @@ public class ReservationController {
     //예약 취소시 실행
     @DeleteMapping("/{reservationId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void DeleteRequest(@PathVariable Long reservationId, Authentication authentication){
-        if (authentication == null || !authentication.isAuthenticated()
-                || authentication instanceof AnonymousAuthenticationToken) {
-            throw new CustomException(ErrorCode.NOT_ABLE_STUDENT);
-        }
-        boolean teacher = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_TEACHER"));
-        boolean student = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_STUDENT"));
-        if (!teacher && !(student && slotRepository.existsByReservation_IdAndStudent_User_Id(
-                reservationId, authentication.getName()))) {
-            throw new CustomException(ErrorCode.NOT_ABLE_STUDENT);
-        }
-        reservationService.reservationDelete(reservationId);
+    public void DeleteRequest(
+            @PathVariable Long reservationId,
+            @RequestHeader("Authorization") String token
+    ){
+        reservationService.reservationDelete(reservationId, token);
     }
 }

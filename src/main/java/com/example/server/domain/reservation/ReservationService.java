@@ -9,6 +9,7 @@ import com.example.server.domain.reservationSlot.ReservationSlotRepository;
 import com.example.server.global.error.exception.CustomException;
 import com.example.server.global.error.exception.ErrorCode;
 import com.example.server.domain.reservation.repository.ReservationRepository;
+import com.example.server.global.security.JWT.TokenManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,7 @@ public class ReservationService {
     final private ReservationRepository reservationRepository;
     private final ClassroomRepository classroomRepository;
     private final ReservationSlotRepository slotRepository;
+    private final TokenManager tokenManager;
 
     private final Clock clock;
 
@@ -85,7 +87,13 @@ public class ReservationService {
 
     //삭제
     @Transactional
-    public void reservationDelete(Long id){
+    public void reservationDelete(Long id, String token){
+        Reservation reservation = reservationRepository.findById(id)
+                .orElseThrow(()-> new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
+        String userId = reservation.getUser().getId();
+        if (userId.equals(tokenManager.getSubject(token))){
+            throw new CustomException(ErrorCode.IS_NOT_YOUR_RESERVATION);
+        }
         reservationRepository.deleteById(id);
     }
 
