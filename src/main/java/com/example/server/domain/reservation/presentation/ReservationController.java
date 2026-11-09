@@ -31,6 +31,7 @@ public class ReservationController {
     final private ClassroomService classroomService;
     private final Clock clock;
     private final ReservationSlotRepository slotRepository;
+
     //생성
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
@@ -38,7 +39,7 @@ public class ReservationController {
             @RequestHeader("Authorization") String token,
             @RequestBody BookingDTO dto
     ){
-        LocalTime nowTime=LocalTime.now(clock);
+        LocalTime nowTime=LocalTime.now(java.time.ZoneId.of("Asia/Seoul"));
         if (
                 nowTime.isAfter(LocalTime.of(8,0)) &&
                 nowTime.isBefore(LocalTime.of(16,20))
