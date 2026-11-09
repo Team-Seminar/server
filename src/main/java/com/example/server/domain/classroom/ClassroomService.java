@@ -14,13 +14,14 @@ import java.util.List;
 public class ClassroomService {
     private final ClassroomRepository classroomRepository;
 
-    //읽기
+    //조회
+    //상세 조회
     public Classroom classroomGet(Long classId) {
         return classroomRepository
                 .findById(classId)
                 .orElseThrow(()->new CustomException(ErrorCode.CLASS_NOT_FOUND));
     }
-
+    //전체 조회
     public List<Classroom> classroomGetAll() {
         return classroomRepository.findAll();
     }

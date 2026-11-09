@@ -33,7 +33,7 @@ public class ReservationFacade {
             throw new CustomException(ErrorCode.IS_EMPTY_PERIOD);
         }
 
-        //필요 값만 얻어서 활용
+        //예약 생성 후 필요 값만 얻어서 활용
         Map<String,String> data = reservationService.reservationCreate(
                 ReservationCreateDTO.builder()
                         .classroomId(dto.classroomId())
