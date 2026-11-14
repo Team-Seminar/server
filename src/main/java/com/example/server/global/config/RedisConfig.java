@@ -31,7 +31,10 @@ public class RedisConfig {
         //설정
         redisStandaloneConfiguration.setHostName(host);
         redisStandaloneConfiguration.setPort(port);
-        redisStandaloneConfiguration.setPassword(password);
+
+        if (password != null && !password.isBlank()) {
+            redisStandaloneConfiguration.setPassword(password);
+        }
 
         //Lettuce 커넥션 팩토리에 설정 주입 후 반환
         return new LettuceConnectionFactory(redisStandaloneConfiguration);
