@@ -144,8 +144,18 @@ public class ReservationService {
     public void reservationUse(Long classroomId, ReservationUseDTO useDTO){
         Classroom classroom = classroomRepository.findById(classroomId)
                 .orElseThrow(()->new CustomException(ErrorCode.CLASS_NOT_FOUND));
-        Reservation reservation = reservationRepository.findByClassroomAndPassword(classroom, useDTO.reservationPW())
-                .orElseThrow(()->new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
+        List<Reservation> reservationList = reservationRepository.findByClassroom(classroom);
+
+        Reservation reservation=null;
+        for (Reservation temp:reservationList){
+            if (temp.getPassword().equals(useDTO.reservationPW())){
+                reservation=temp;
+                break;
+            }
+        }
+        if (reservation==null){
+            throw new CustomException(ErrorCode.RESERVATION_NOT_PASSWORD);
+        }
 
         if (
                 slotRepository.findPeriodsByReservation_Id(reservation.getId())
