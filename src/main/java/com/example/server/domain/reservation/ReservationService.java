@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
@@ -30,6 +31,36 @@ public class ReservationService {
     private final TokenManager tokenManager;
 
     private final Clock clock;
+
+    private int getSlotByLocaltime(){
+        LocalTime now = LocalTime.now();
+
+        List<LocalTime> slotTimes = List.of(
+                LocalTime.of(1,0),
+                LocalTime.of(1,0),
+                LocalTime.of(1,0),
+                LocalTime.of(1,0),
+                LocalTime.of(1,50),
+                LocalTime.of(1,0),
+                LocalTime.of(1,0),
+                LocalTime.of(1,0),
+                LocalTime.of(1,50),
+                LocalTime.of(1,0)
+        );
+
+        LocalTime temp = LocalTime.of(8,30);
+        int cnt = 0;
+        for (LocalTime plus : slotTimes){
+            if (now.isBefore(temp)){
+                break;
+            }
+            cnt++;
+            temp=temp.plusHours(plus.getHour());
+            temp=temp.plusMinutes(plus.getMinute());
+        }
+
+        return cnt;
+    }
 
     //읽기
     //상세 조회
@@ -115,6 +146,14 @@ public class ReservationService {
                 .orElseThrow(()->new CustomException(ErrorCode.CLASS_NOT_FOUND));
         Reservation reservation = reservationRepository.findByClassroomAndPassword(classroom, useDTO.reservationPW())
                 .orElseThrow(()->new CustomException(ErrorCode.RESERVATION_NOT_FOUND));
+
+        if (
+                slotRepository.findPeriodsByReservation_Id(reservation.getId())
+                        .contains(getSlotByLocaltime())
+        ){
+            throw new CustomException(ErrorCode.RESERVATION_NOT_TIME);
+        }
+
         if (!reservation.getStatus().equals(ReservationStatus.ALLOW)){
             throw new CustomException(ErrorCode.RESERVATION_NOT_ALLOW);
         }
